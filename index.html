@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanilla JS Calendar</title>
+    <link rel="shortcut icon" href="images/calendar.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/drusjs.calendar.css">
+</head>
+<body>
+    <div class="drusjs-calendar">
+        <div class="calendar from js-from">
+            <div class="calendar-main">
+                <div class="calendar-main__text">ДАТА ОТ</div>
+                <input type="text" class="input day" placeholder="ДД" maxlength="2">
+                <div class="dot">.</div>
+                <input type="text" class="input month" placeholder="ММ" maxlength="2">
+                <div class="dot">.</div>
+                <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+            </div>
+            <div class="calendar-select year-select js-date-select">
+                <div class="calendar-select-head">
+                    <button class="calendar-select-swap left"></button>
+                    <div class="calendar-select-value">Выберите год</div>
+                    <button class="calendar-select-swap right"></button>
+                </div>
+                <div class="calendar-select-dropdown">
+                    <div class="calendar-select-dropdown__item">2023</div>
+                    <div class="calendar-select-dropdown__item">2022</div>
+                    <div class="calendar-select-dropdown__item">2021</div>
+                    <div class="calendar-select-dropdown__item">2020</div>
+                    <div class="calendar-select-dropdown__item">2019</div>
+                    <div class="calendar-select-dropdown__item">2018</div>
+                    <div class="calendar-select-dropdown__item">2017</div>
+                </div>
+            </div>
+            <div class="calendar-select month-select js-date-select">
+                <div class="calendar-select-head">
+                    <button class="calendar-select-swap left"></button>
+                    <div class="calendar-select-value">Выберите месяц</div>
+                    <button class="calendar-select-swap right"></button>
+                </div>
+                <div class="calendar-select-dropdown">
+                    <div class="calendar-select-dropdown__item">Январь</div>
+                    <div class="calendar-select-dropdown__item">Февраль</div>
+                    <div class="calendar-select-dropdown__item">Март</div>
+                    <div class="calendar-select-dropdown__item">Апрель</div>
+                    <div class="calendar-select-dropdown__item">Май</div>
+                    <div class="calendar-select-dropdown__item">Июнь</div>
+                    <div class="calendar-select-dropdown__item">Июль</div>
+                    <div class="calendar-select-dropdown__item">Август</div>
+                    <div class="calendar-select-dropdown__item">Сентябрь</div>
+                    <div class="calendar-select-dropdown__item">Октябрь</div>
+                    <div class="calendar-select-dropdown__item">Ноябрь</div>
+                    <div class="calendar-select-dropdown__item">Декабрь</div>
+                </div>
+            </div>
+            <table class="calendar-table">
+                <tr class="calendar-table-row head">
+                    <th class="calendar-table-cell">Пн</th>
+                    <th class="calendar-table-cell">Вт</th>
+                    <th class="calendar-table-cell">Ср</th>
+                    <th class="calendar-table-cell">Чт</th>
+                    <th class="calendar-table-cell">Пт</th>
+                    <th class="calendar-table-cell">Сб</th>
+                    <th class="calendar-table-cell">Вс</th>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell">1</td>
+                    <td class="calendar-table-cell">2</td>
+                    <td class="calendar-table-cell">3</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="calendar to js-to">
+            <div class="calendar-main">
+                <div class="calendar-main__text">ДАТА ОТ</div>
+                <input type="text" class="input day" placeholder="ДД" maxlength="2">
+                <div class="dot">.</div>
+                <input type="text" class="input month" placeholder="ММ" maxlength="2">
+                <div class="dot">.</div>
+                <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+            </div>
+            <div class="calendar-select year-select js-date-select">
+                <div class="calendar-select-head">
+                    <button class="calendar-select-swap left"></button>
+                    <div class="calendar-select-value">Выберите год</div>
+                    <button class="calendar-select-swap right"></button>
+                </div>
+                <div class="calendar-select-dropdown">
+                    <div class="calendar-select-dropdown__item">2023</div>
+                    <div class="calendar-select-dropdown__item">2022</div>
+                    <div class="calendar-select-dropdown__item">2021</div>
+                    <div class="calendar-select-dropdown__item">2020</div>
+                    <div class="calendar-select-dropdown__item">2019</div>
+                    <div class="calendar-select-dropdown__item">2018</div>
+                    <div class="calendar-select-dropdown__item">2017</div>
+                </div>
+            </div>
+            <div class="calendar-select month-select js-date-select">
+                <div class="calendar-select-head">
+                    <button class="calendar-select-swap left"></button>
+                    <div class="calendar-select-value">Выберите месяц</div>
+                    <button class="calendar-select-swap right"></button>
+                </div>
+                <div class="calendar-select-dropdown">
+                    <div class="calendar-select-dropdown__item">Январь</div>
+                    <div class="calendar-select-dropdown__item">Февраль</div>
+                    <div class="calendar-select-dropdown__item">Март</div>
+                    <div class="calendar-select-dropdown__item">Апрель</div>
+                    <div class="calendar-select-dropdown__item">Май</div>
+                    <div class="calendar-select-dropdown__item">Июнь</div>
+                    <div class="calendar-select-dropdown__item">Июль</div>
+                    <div class="calendar-select-dropdown__item">Август</div>
+                    <div class="calendar-select-dropdown__item">Сентябрь</div>
+                    <div class="calendar-select-dropdown__item">Октябрь</div>
+                    <div class="calendar-select-dropdown__item">Ноябрь</div>
+                    <div class="calendar-select-dropdown__item">Декабрь</div>
+                </div>
+            </div>
+            <table class="calendar-table">
+                <tr class="calendar-table-row head">
+                    <th class="calendar-table-cell">Пн</th>
+                    <th class="calendar-table-cell">Вт</th>
+                    <th class="calendar-table-cell">Ср</th>
+                    <th class="calendar-table-cell">Чт</th>
+                    <th class="calendar-table-cell">Пт</th>
+                    <th class="calendar-table-cell">Сб</th>
+                    <th class="calendar-table-cell">Вс</th>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell">1</td>
+                    <td class="calendar-table-cell">2</td>
+                    <td class="calendar-table-cell">3</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell">9</td>
+                    <td class="calendar-table-cell">10</td>
+                </tr>
+                <tr class="calendar-table-row">
+                    <td class="calendar-table-cell">4</td>
+                    <td class="calendar-table-cell">5</td>
+                    <td class="calendar-table-cell">6</td>
+                    <td class="calendar-table-cell">7</td>
+                    <td class="calendar-table-cell">8</td>
+                    <td class="calendar-table-cell empty"></td>
+                    <td class="calendar-table-cell empty"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script src="js/drusjs.calendar.js"></script>
+</body>
+</html>
