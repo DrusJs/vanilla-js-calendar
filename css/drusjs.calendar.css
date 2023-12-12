@@ -160,18 +160,20 @@
 }
 .drusjs-calendar .calendar-table-cell {
     box-sizing: border-box;
-    width: 51px;
+    min-width: 51px;
     height: 51px;
     color: #6CA3FE;
     background-color: #F6F6F6;
     text-align: center;
-    line-height: 51px;
+    line-height: 48px;
     border: 0.5px solid #969FA8;
+    cursor: pointer;
 }
 .drusjs-calendar th.calendar-table-cell {
     background-color: #FFFFFF;
     color: #000000;
     font-weight: 400;
+    cursor: default;
 }
 .drusjs-calendar .calendar-table-cell.active {
     background-color: #2879FF;
@@ -184,4 +186,5 @@
 .drusjs-calendar .calendar-table-cell.empty {
     border: none;
     background-color: #FFFFFF;
+    cursor: default;
 }
