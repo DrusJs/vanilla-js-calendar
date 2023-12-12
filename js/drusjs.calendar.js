@@ -4,14 +4,17 @@ const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
 const DATE = new Date()
 const NOW_YEAR = DATE.getFullYear()
 const LATE_YEAR = 1976
+
 let isFirstDay = false
 let isPeriod = false
 let isTableToPath = false
 let isLastDay = false
 
+let dateFrom, dateTo = DATE
+
 Date.prototype.daysInMonth = function() {
-    return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate();
-};
+    return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
+}
 
 if (calendarSelectValueElements.length) {
     for (let select of calendarSelectValueElements) {
