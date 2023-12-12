@@ -14,14 +14,16 @@
 }
 .drusjs-calendar .calendar {
     box-sizing: border-box;
-    width: 357px;
+    max-width: 358px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     font-size: 19px;
 }
 .drusjs-calendar .calendar-main {
     box-sizing: border-box;
-    width: 100%;    
+    width: 100%; 
+    max-width: 358px;   
     height: 51px;
     display: flex;
     cursor: pointer;
@@ -69,6 +71,7 @@
 .drusjs-calendar .calendar-select-head {
     box-sizing: border-box;
     width: 100%;
+    max-width: 358px;
     height: 51px;
     border: 0.5px solid #969FA8;
     border-top: none;
@@ -129,6 +132,7 @@
     position: absolute;
     background-color: #FFFFFF;
     width: 100%;
+    max-width: 358px;
     z-index: 1;
     top: 51px;
     display: none;
@@ -140,6 +144,7 @@
     box-sizing: border-box;
     color: #2961FE;
     width: 100%;
+    max-width: 358px;
     height: 51px;    
     border: 0.5px solid #969FA8;
     border-top: none;
@@ -153,10 +158,11 @@
 .drusjs-calendar .calendar-table {
     box-sizing: border-box;
     width: 100%;
+    max-width: 358px;
     border-collapse: collapse;
     background-color: #FFFFFF;
-    margin-top: -1px;
     border: 0.5px solid #969FA8;
+    border-top: none;
 }
 .drusjs-calendar .calendar-table-cell {
     box-sizing: border-box;
@@ -174,6 +180,7 @@
     color: #000000;
     font-weight: 400;
     cursor: default;
+    border-top: none;
 }
 .drusjs-calendar .calendar-table-cell.active {
     background-color: #2879FF;
