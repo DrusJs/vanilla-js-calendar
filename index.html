@@ -14,12 +14,21 @@
     <div class="drusjs-calendar">
         <div class="calendar from js-from">
             <div class="calendar-main">
-                <div class="calendar-main__text">ДАТА ОТ</div>
-                <input type="text" class="input day" placeholder="ДД" maxlength="2">
-                <div class="dot">.</div>
-                <input type="text" class="input month" placeholder="ММ" maxlength="2">
-                <div class="dot">.</div>
-                <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+                <div class="calendar-main-inner">
+                    <div class="calendar-main__text">ДАТА ОТ</div>
+                    <input type="text" class="input day" placeholder="ДД" maxlength="2">
+                    <div class="dot">.</div>
+                    <input type="text" class="input month" placeholder="ММ" maxlength="2">
+                    <div class="dot">.</div>
+                    <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+                    <div class="complete-date"></div>
+                </div>
+                <div class="clear-button" onclick="clearDateField(this, true), event.stopPropagation()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 5L19.33 19.33M5 19.33L19.33 5" stroke="#2879FF" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="tooltip">Очистить поле?</div>
+                </div>
             </div>
             <div class="calendar-select year-select js-date-select">
                 <div class="calendar-select-head">
@@ -44,12 +53,21 @@
         </div>
         <div class="calendar to js-to">
             <div class="calendar-main">
-                <div class="calendar-main__text">ДАТА ОТ</div>
-                <input type="text" class="input day" placeholder="ДД" maxlength="2">
-                <div class="dot">.</div>
-                <input type="text" class="input month" placeholder="ММ" maxlength="2">
-                <div class="dot">.</div>
-                <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+                <div class="calendar-main-inner">
+                    <div class="calendar-main__text">ДАТА ДО</div>
+                    <input type="text" class="input day" placeholder="ДД" maxlength="2">
+                    <div class="dot">.</div>
+                    <input type="text" class="input month" placeholder="ММ" maxlength="2">
+                    <div class="dot">.</div>
+                    <input type="text" class="input year" placeholder="ГГГГ" maxlength="4">
+                    <div class="complete-date"></div>
+                </div>
+                <div class="clear-button" onclick="clearDateField(this, false), event.stopPropagation()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 5L19.33 19.33M5 19.33L19.33 5" stroke="#2879FF" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <div class="tooltip">Очистить поле?</div>
+                </div>
             </div>
             <div class="calendar-select year-select js-date-select">
                 <div class="calendar-select-head">

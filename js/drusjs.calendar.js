@@ -1,5 +1,8 @@
 const calendarSelectValueElements = document.querySelectorAll('.calendar-select-value')
+const calendarFrom = document.querySelector('.js-from')
+const calendarTo = document.querySelector('.js-to')
 const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+const MONTH_ENDING = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] 
 const DATE = new Date()
 const NOW_YEAR = DATE.getFullYear()
@@ -12,6 +15,8 @@ let isLastDay = false
 
 let dateFrom, dateTo = DATE
 
+
+
 Date.prototype.daysInMonth = function() {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
 }
@@ -23,6 +28,38 @@ if (calendarSelectValueElements.length) {
         })
     }
 }
+
+function clearDateField(element, isDateFrom) {
+    let container = element.closest('.calendar')
+    container.classList.remove('complete')
+    isDateFrom?dateFrom=null:dateTo=null
+    clearInputs(container)
+}
+
+
+function clearInputs(element) {
+    element.querySelector('.input.day').value = ""
+    element.querySelector('.input.month').value = ""
+    element.querySelector('.input.year').value = ""
+    element.querySelector('.complete-date').innerHTML = ""
+}
+
+function setDate(element, date) {
+    element.classList.add('complete')
+    element.querySelector('.input.day').value = setTwoDigitsValue(date.getDay())
+    element.querySelector('.input.month').value = date.getMonth()+1
+    element.querySelector('.input.year').value = date.getFullYear()
+    element.querySelector('.complete-date').innerHTML = createCompleteDate(date)
+}
+
+function createCompleteDate(date) {
+    return `${setTwoDigitsValue(date.getDay())}  ${MONTH_ENDING[date.getMonth()]}  ${date.getFullYear()}`
+}
+function setTwoDigitsValue(date) {
+    return +date<10?'0'+date:date
+}
+
+setDate(calendarTo, DATE)
 
 function clearCalendars() {    
     while (document.querySelector('.calendar-table-cell.active')) {
@@ -150,6 +187,17 @@ function createMonthTable(date, num) {
         table.append(row)      
     }
 }
-createMonthTable(DATE, 0)
-createMonthTable(DATE, 1)
+// createMonthTable(DATE, 0)
+// createMonthTable(DATE, 1)
+
+const calendarMainElements = document.querySelectorAll('.calendar-main')
+if (calendarMainElements.length) {
+    for (let item of calendarMainElements) {
+        item.addEventListener('click', (event) => {
+            if (!event.currentTarget.classList.contains('active') && !event.currentTarget.classList.contains('complete')) {
+                event.currentTarget.parentElement.classList.add('active')
+            }
+        })
+    }
+}
 
