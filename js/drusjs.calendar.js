@@ -194,10 +194,28 @@ const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
         item.addEventListener('click', (event) => {
-            if (!event.currentTarget.classList.contains('active') && !event.currentTarget.classList.contains('complete')) {
+            if (!event.currentTarget.classList.contains('active')) {
+                event.currentTarget.parentElement.classList.remove('complete')
                 event.currentTarget.parentElement.classList.add('active')
             }
         })
+    }
+}
+
+const inputElements = document.querySelectorAll('.input')
+if (inputElements.length) {
+    for (let item of inputElements) {
+        item.addEventListener('keydown', function(event) {
+            if ( event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            } else {
+                if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
+                    event.preventDefault();
+                }
+            }
+        });
     }
 }
 
