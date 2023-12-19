@@ -39,6 +39,9 @@ function clearDateField(element, isDateFrom) {
     container.classList.remove('complete')
     isDateFrom?dateFrom=null:dateTo=null
     clearInputs(container)
+    container.querySelectorAll('.calendar-select-head').forEach(el=>{
+        el.classList.add('none-select')
+    })
 }
 
 
@@ -122,6 +125,7 @@ function calendarTableCellAction(element) {
                 setPath(pathTables[1], element, false)
             } else {
                 element.classList.add('active')
+                element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
                 if (element.dataset.last) { isLastDay=true; return }
                 isFirstDay = true
                 if (table.dataset.ind==1) { isTableToPath = true }
@@ -231,7 +235,8 @@ if (calendarSelectDropdownElements.length) {
     for (let dropdown of calendarSelectDropdownElements) {
         dropdown.querySelectorAll('.calendar-select-dropdown__item').forEach(el => {
             el.addEventListener('click', (event) => {
-                dropdown.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML                
+                dropdown.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML
+                dropdown.parentElement.firstElementChild.classList.remove('none-select')             
                 event.currentTarget.closest('.calendar-select').classList.remove('active')
                 if (dropdown.parentElement.classList.contains('year-select')) {
                     dropdown.closest('.calendar').querySelector('.input.year').value = event.currentTarget.innerHTML
