@@ -66,13 +66,14 @@ function setTwoDigitsValue(date) {
 
 setDate(calendarTo, DATE)
 
-function clearCalendars() {    
-    while (document.querySelector('.calendar-table-cell.active')) {
-        document.querySelector('.calendar-table-cell.active').classList.remove('active')
-    }
-    while (document.querySelector('.calendar-table-cell.path')) {
-        document.querySelector('.calendar-table-cell.path').classList.remove('path')
-    }
+function clearCalendars() {
+    document.querySelectorAll('.calendar-table-cell.active').forEach(el=>{
+        el.classList.remove('active')
+    })
+    document.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
+        el.classList.remove('path')
+    })
+
     isFirstDay = false 
     isPeriod = false
     isTableToPath = false 
