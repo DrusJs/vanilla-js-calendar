@@ -51,14 +51,14 @@ function clearInputs(element) {
 
 function setDate(element, date) {
     element.classList.add('complete')
-    element.querySelector('.input.day').value = setTwoDigitsValue(date.getDay())
+    element.querySelector('.input.day').value = setTwoDigitsValue(date.getDate())
     element.querySelector('.input.month').value = date.getMonth()+1
     element.querySelector('.input.year').value = date.getFullYear()
     element.querySelector('.complete-date').innerHTML = createCompleteDate(date)
 }
 
 function createCompleteDate(date) {
-    return `${setTwoDigitsValue(date.getDay())}  ${MONTH_ENDING[date.getMonth()]}  ${date.getFullYear()}`
+    return `${setTwoDigitsValue(date.getDate())}  ${MONTH_ENDING[date.getMonth()]}  ${date.getFullYear()}`
 }
 function setTwoDigitsValue(date) {
     return +date<10?'0'+date:date
@@ -175,7 +175,7 @@ function createMonthTable(date, num) {
     let cellCount = 1
     let dayCount = date.daysInMonth()
     table.innerHTML = ''
-    for (let i=0; i<6; i++) {
+    for (let i=0; i<7; i++) {
         let row = document.createElement('tr')
         row.classList.add('calendar-table-row')
         if (!i) {row.classList.add('head')}

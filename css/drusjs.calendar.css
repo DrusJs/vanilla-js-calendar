@@ -234,6 +234,7 @@
 }
 .drusjs-calendar .calendar-table {
     box-sizing: border-box;
+    display: none;
     width: 100%;
     max-width: 358px;
     border-collapse: collapse;
@@ -279,6 +280,10 @@
 }
 .drusjs-calendar .calendar.active .calendar-select-head {
     display: flex;
+}
+
+.drusjs-calendar .calendar.active .calendar-table {
+    display: table;
 }
 
 .drusjs-calendar .calendar.complete .calendar-main-inner,
