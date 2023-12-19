@@ -8,11 +8,12 @@ const DATE = new Date()
 const NOW_YEAR = DATE.getFullYear()
 const LATE_YEAR = 1976
 
+let DATE_TO = DATE, DATE_FROM = null
 let isFirstDay = false
 let isPeriod = false
 let isTableToPath = false
 let isLastDay = false
-
+let tempDate
 let dateFrom, dateTo = DATE
 
 
@@ -27,6 +28,10 @@ if (calendarSelectValueElements.length) {
             event.currentTarget.closest('.calendar-select').classList.toggle('active')
         })
     }
+}
+
+function isTO(calendar) {
+    return calendar.classList.contains('js-to')
 }
 
 function clearDateField(element, isDateFrom) {
@@ -132,8 +137,10 @@ function createMonthFields(month) {
             el.append(element)
         }
     })
+    
 }
 createMonthFields(MONTH)
+
 
 function createYearFields(from, to) {
     document.querySelectorAll('.year-select .calendar-select-dropdown').forEach(el => {
@@ -194,9 +201,17 @@ const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
         item.addEventListener('click', (event) => {
-            if (!event.currentTarget.classList.contains('active')) {
-                event.currentTarget.parentElement.classList.remove('complete')
-                event.currentTarget.parentElement.classList.add('active')
+            let calendar =  event.currentTarget.parentElement
+            let self = event.currentTarget
+            if (!self.classList.contains('active')) {
+                calendar.classList.add('active')
+                if (calendar.classList.contains('complete')) {
+                    calendar.classList.remove('complete')
+                    calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?DATE_TO.getFullYear():DATE_FROM.getFullYear()
+                    calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[DATE_TO.getMonth()]:MONTH[DATE_FROM.getMonth()]
+                    createMonthTable(isTO(calendar)?DATE_TO:DATE_FROM, isTO(calendar)?1:0)
+                    calendar.querySelector(`[data-day="${isTO(calendar)?DATE_TO.getDate():DATE_FROM.getDate()}"]`).click()
+                }
             }
         })
     }

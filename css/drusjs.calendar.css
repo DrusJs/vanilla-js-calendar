@@ -59,6 +59,7 @@
     padding: 0;
     height: fit-content;
     border: none;
+    text-align: center;
     outline: none;
 }
 .drusjs-calendar .input.day {
@@ -200,10 +201,19 @@
     background-color: #FFFFFF;
     width: 100%;
     max-width: 358px;
+    max-height: 305px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     z-index: 1;
+    border-bottom: 0.5px solid #969FA8;
     top: 51px;
     display: none;
 }
+.calendar-select-dropdown::-webkit-scrollbar {
+    display: none;
+}
+
 .drusjs-calendar .calendar-select.active .calendar-select-dropdown {
     display: block;
 }
