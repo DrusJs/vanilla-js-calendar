@@ -1,29 +1,44 @@
-.drusjs-calendar {
-    width: fit-content;
-    margin: 100px auto;
-    padding: 50px;
+:root {
+    --primary-height: 51px;
 }
-
 .drusjs-calendar {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
     background-color: #F1F1F1;
     font-weight: 400;
     display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 722px;
     gap: 5px;
 }
+
+.drusjs-calendar .disabled {
+    pointer-events: none;
+}
+
+/*Удалить*/
+.drusjs-calendar {
+    width: fit-content;
+    margin: 100px auto;
+    padding: 50px;
+    max-width: 822px;
+}
+/*Удалить*/
+
 .drusjs-calendar .calendar {
     box-sizing: border-box;
     width: 358px;
     display: flex;
     flex-direction: column;
     font-size: 19px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
 }
 .drusjs-calendar .calendar-main {
     box-sizing: border-box;
     width: 100%; 
     max-width: 358px;   
-    height: 51px;
+    height: var(--primary-height);
     display: flex;
     gap: 4px;
     cursor: pointer;
@@ -140,7 +155,7 @@
     box-sizing: border-box;
     width: 100%;
     max-width: 358px;
-    height: 51px;
+    height: var(--primary-height);
     border: 0.5px solid #969FA8;
     border-top: none;
     display: none;
@@ -207,7 +222,7 @@
     scrollbar-width: none;
     z-index: 1;
     border-bottom: 0.5px solid #969FA8;
-    top: 51px;
+    top: var(--primary-height);
     display: none;
 }
 .calendar-select-dropdown::-webkit-scrollbar {
@@ -222,11 +237,11 @@
     color: #2961FE;
     width: 100%;
     max-width: 358px;
-    height: 51px;    
+    height: var(--primary-height);    
     border: 0.5px solid #969FA8;
     border-top: none;
     text-align: center;
-    line-height: 51px;
+    line-height: var(--primary-height);
     cursor: pointer;
 }
 .drusjs-calendar .calendar-select-dropdown__item:hover {
@@ -244,8 +259,8 @@
 }
 .drusjs-calendar .calendar-table-cell {
     box-sizing: border-box;
-    min-width: 51px;
-    height: 51px;
+    min-width: var(--primary-height);
+    height: var(--primary-height);
     color: #6CA3FE;
     background-color: #F6F6F6;
     text-align: center;
@@ -278,7 +293,8 @@
 .drusjs-calendar .calendar.active .calendar-main-inner {
     background-color: #FFFFFF;
 }
-.drusjs-calendar .calendar.active .calendar-select-head {
+.drusjs-calendar .calendar.active .calendar-select-head,
+.drusjs-calendar .calendar.active ~ .calendar-action-bar {
     display: flex;
 }
 
@@ -314,4 +330,59 @@
 }
 .drusjs-calendar .calendar.complete .clear-button:hover path {
     stroke: #FFFFFF;
+}
+
+.drusjs-calendar .calendar-action-bar {
+    display: none;
+    gap: 20px;
+    width: 100%;
+    height: var(--primary-height);
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: -3px;
+    background-color: #F6F6F6;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+}
+.drusjs-calendar .calendar-action-bar .reset-changes {
+    color: #B2B4B4;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 19px;
+    transition: 260ms ease-in-out;
+    pointer-events: none;
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-skip-ink: none;
+}
+.drusjs-calendar .calendar-action-bar.active .reset-changes {
+    color: #2879FF;
+    pointer-events: auto;
+    cursor: pointer;
+}
+.drusjs-calendar .calendar-action-bar .reset-changes:hover {
+    text-decoration-color: #2879FF;
+}
+
+.drusjs-calendar .calendar-action-bar .accept-changes {
+    color: #FFFFFF;
+    background-color: #B2B4B4;
+    outline: none;
+    border: none;
+    padding: 0 8px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 19px;
+    transition: 260ms ease-in-out;
+    pointer-events: none;
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-decoration-skip-ink: none;
+}
+.drusjs-calendar .calendar-action-bar.active .accept-changes {
+    background-color: #2879FF;
+    pointer-events: auto;
+    cursor: pointer;
 }

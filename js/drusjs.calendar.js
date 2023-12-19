@@ -1,6 +1,7 @@
 const calendarSelectValueElements = document.querySelectorAll('.calendar-select-value')
 const calendarFrom = document.querySelector('.js-from')
 const calendarTo = document.querySelector('.js-to')
+const calendarElement = document.querySelector('.drusjs-calendar')
 const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 const MONTH_ENDING = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] 
@@ -8,7 +9,6 @@ const DATE = new Date()
 const NOW_YEAR = DATE.getFullYear()
 const LATE_YEAR = 1976
 
-let DATE_TO = DATE, DATE_FROM = null
 let isFirstDay = false
 let isPeriod = false
 let isTableToPath = false
@@ -207,10 +207,10 @@ if (calendarMainElements.length) {
                 calendar.classList.add('active')
                 if (calendar.classList.contains('complete')) {
                     calendar.classList.remove('complete')
-                    calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?DATE_TO.getFullYear():DATE_FROM.getFullYear()
-                    calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[DATE_TO.getMonth()]:MONTH[DATE_FROM.getMonth()]
-                    createMonthTable(isTO(calendar)?DATE_TO:DATE_FROM, isTO(calendar)?1:0)
-                    calendar.querySelector(`[data-day="${isTO(calendar)?DATE_TO.getDate():DATE_FROM.getDate()}"]`).click()
+                    calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
+                    calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
+                    createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
+                    calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
                 }
             }
         })
@@ -233,4 +233,12 @@ if (inputElements.length) {
         });
     }
 }
+
+// window.addEventListener('click', (event)=> {
+//     if (!calendarElement.contains(event.target)) {
+//         calendarFrom.classList.remove('active')
+//         calendarTo.classList.remove('active')
+//         setDate(calendarTo, DATE)
+//     }
+// })
 
