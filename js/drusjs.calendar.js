@@ -127,7 +127,19 @@ function calendarTableCellAction(element) {
                 if (table.dataset.ind==1) { isTableToPath = true }
             }
 }
-
+function eventCalendarChangeTable(calendar) {
+    let d = calendar.querySelector('.input.day').value
+    let m = calendar.querySelector('.input.month').value
+    let y = calendar.querySelector('.input.year').value
+    console.log(d, m, y);
+    if (m && y) {
+        clearCalendars()
+        isTO(calendar)?createMonthTable(new Date(y, m-1), 1):createMonthTable(new Date(y, m-1), 0)
+        if (d) {
+            calendar.querySelector(`[data-day="${d}"]`).click()
+        }
+    }
+}
 
 function createMonthFields(month) {
     document.querySelectorAll('.month-select .calendar-select-dropdown').forEach(el => {
@@ -137,6 +149,35 @@ function createMonthFields(month) {
             element.innerHTML = item
             el.append(element)
         }
+    })
+    document.querySelectorAll('.month-select').forEach(el => {
+        el.querySelector('.calendar-select-swap.left').addEventListener('click', (event)=> {
+            if (MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)>0) {
+                event.currentTarget.nextElementSibling.innerHTML = MONTH[MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)-1]
+                event.currentTarget.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)+1)
+                eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                event.currentTarget.nextElementSibling.nextElementSibling.classList.remove('disabled-hide')
+                if (MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)==0) {
+                    event.currentTarget.classList.add('disabled-hide')
+                } 
+            } else {
+                event.currentTarget.classList.add('disabled-hide')
+            }
+
+        })
+        el.querySelector('.calendar-select-swap.right').addEventListener('click', (event)=> {
+            if (MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)<11){
+                event.currentTarget.previousElementSibling.innerHTML = MONTH[MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)+1]
+                event.currentTarget.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)+1)
+                eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                event.currentTarget.previousElementSibling.previousElementSibling.classList.remove('disabled-hide')
+                if (MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)==11) {
+                    event.currentTarget.classList.add('disabled-hide')
+                } 
+            } else {
+                event.currentTarget.classList.add('disabled-hide')
+            }      
+        })
     })
     
 }
@@ -152,6 +193,36 @@ function createYearFields(from, to) {
             el.append(element)
         }
     })
+    document.querySelectorAll('.year-select').forEach(el => {
+        el.querySelector('.calendar-select-swap.left').addEventListener('click', (event)=> {
+            if (+event.currentTarget.nextElementSibling.innerHTML>LATE_YEAR) {
+                event.currentTarget.nextElementSibling.innerHTML = +event.currentTarget.nextElementSibling.innerHTML - 1
+                event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.nextElementSibling.innerHTML     
+                eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                event.currentTarget.nextElementSibling.nextElementSibling.classList.remove('disabled-hide')
+                if (+event.currentTarget.nextElementSibling.innerHTML==LATE_YEAR) {
+                    event.currentTarget.classList.add('disabled-hide')
+                } 
+            } else {
+                event.currentTarget.classList.add('disabled-hide')
+            }
+      
+        })
+        el.querySelector('.calendar-select-swap.right').addEventListener('click', (event)=> {
+            if (+event.currentTarget.previousElementSibling.innerHTML<DATE.getFullYear()) {
+                event.currentTarget.previousElementSibling.innerHTML = +event.currentTarget.previousElementSibling.innerHTML + 1
+                event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.previousElementSibling.innerHTML 
+                eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                event.currentTarget.previousElementSibling.previousElementSibling.classList.remove('disabled-hide')
+                if (+event.currentTarget.previousElementSibling.innerHTML>=DATE.getFullYear()) {
+                    event.currentTarget.classList.add('disabled-hide')
+                } 
+            } else {
+                event.currentTarget.classList.add('disabled-hide')
+            }
+         
+        })
+    })
 }
 createYearFields(LATE_YEAR, NOW_YEAR)
 
@@ -160,8 +231,14 @@ if (calendarSelectDropdownElements.length) {
     for (let dropdown of calendarSelectDropdownElements) {
         dropdown.querySelectorAll('.calendar-select-dropdown__item').forEach(el => {
             el.addEventListener('click', (event) => {
-                dropdown.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML
+                dropdown.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML                
                 event.currentTarget.closest('.calendar-select').classList.remove('active')
+                if (dropdown.parentElement.classList.contains('year-select')) {
+                    dropdown.closest('.calendar').querySelector('.input.year').value = event.currentTarget.innerHTML
+                } else {
+                    dropdown.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.innerHTML)+1)
+                }
+                eventCalendarChangeTable(dropdown.closest('.calendar'))
             })
         })
     }
