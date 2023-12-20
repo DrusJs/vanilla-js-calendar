@@ -62,7 +62,11 @@ function checkToSetDate(calendar) {
     if (d && m && y) {
         let date = new Date(y,m-1,d)
         setDate(calendar, date)
+    } else {
+        calendar.classList.remove('active')
     }
+    // if (isTO(calendar)) {dateTo = new Date(y, m, d)} else {dateFrom = new Date(y, m, d)}
+    // console.log(dateFrom, y, m, d);
 }
 
 function setDate(element, date) {
