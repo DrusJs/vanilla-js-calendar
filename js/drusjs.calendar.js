@@ -13,6 +13,7 @@ let isFirstDay = false
 let isPeriod = false
 let isTableToPath = false
 let isLastDay = false
+let isEdit = false
 let tempDate
 let dateFrom, dateTo = DATE
 
@@ -25,7 +26,8 @@ Date.prototype.daysInMonth = function() {
 if (calendarSelectValueElements.length) {
     for (let select of calendarSelectValueElements) {
         select.addEventListener('click', (event) => {
-            event.currentTarget.closest('.calendar-select').classList.toggle('active')
+            if (event.currentTarget.closest('.month-select') && event.currentTarget.closest('.calendar').querySelector('.input.year').value == "") {return}   
+            event.currentTarget.closest('.calendar-select').classList.toggle('active')         
         })
     }
 }
@@ -45,6 +47,7 @@ function clearDateField(element, isDateFrom) {
 }
 
 
+
 function clearInputs(element) {
     element.querySelector('.input.day').value = ""
     element.querySelector('.input.month').value = ""
@@ -52,10 +55,20 @@ function clearInputs(element) {
     element.querySelector('.complete-date').innerHTML = ""
 }
 
+function checkToSetDate(calendar) {
+    let d = calendar.querySelector('.input.day').value
+    let m = calendar.querySelector('.input.month').value
+    let y = calendar.querySelector('.input.year').value
+    if (d && m && y) {
+        let date = new Date(y,m-1,d)
+        setDate(calendar, date)
+    }
+}
+
 function setDate(element, date) {
     element.classList.add('complete')
     element.querySelector('.input.day').value = setTwoDigitsValue(date.getDate())
-    element.querySelector('.input.month').value = date.getMonth()+1
+    element.querySelector('.input.month').value = setTwoDigitsValue(+date.getMonth()+1)
     element.querySelector('.input.year').value = date.getFullYear()
     element.querySelector('.complete-date').innerHTML = createCompleteDate(date)
 }
@@ -131,11 +144,10 @@ function calendarTableCellAction(element) {
                 if (table.dataset.ind==1) { isTableToPath = true }
             }
 }
-function eventCalendarChangeTable(calendar) {
+function eventCalendarChangeTable(calendar, isInput = false) {
     let d = calendar.querySelector('.input.day').value
     let m = calendar.querySelector('.input.month').value
     let y = calendar.querySelector('.input.year').value
-    console.log(d, m, y);
     if (m && y) {
         clearCalendars()
         isTO(calendar)?createMonthTable(new Date(y, m-1), 1):createMonthTable(new Date(y, m-1), 0)
@@ -277,23 +289,24 @@ function createMonthTable(date, num) {
         table.append(row)      
     }
 }
-// createMonthTable(DATE, 0)
-// createMonthTable(DATE, 1)
 
 const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
         item.addEventListener('click', (event) => {
-            let calendar =  event.currentTarget.parentElement
-            let self = event.currentTarget
-            if (!self.classList.contains('active')) {
-                calendar.classList.add('active')
-                if (calendar.classList.contains('complete')) {
-                    calendar.classList.remove('complete')
-                    calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
-                    calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
-                    createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
-                    calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
+            if (!isEdit){
+                let calendar =  event.currentTarget.parentElement
+                let self = event.currentTarget
+                isEdit = true
+                if (!self.classList.contains('active')) {
+                    calendar.classList.add('active')
+                    if (calendar.classList.contains('complete')) {
+                        calendar.classList.remove('complete')
+                        calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
+                        calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
+                        createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
+                        calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
+                    }
                 }
             }
         })
@@ -315,6 +328,43 @@ if (inputElements.length) {
             }
         });
     }
+
+    document.querySelectorAll('.input.day').forEach(el=>{
+        el.addEventListener('keydown', function(event) {
+            
+        })
+        el.addEventListener('input', function(event) {            
+            if (el.value.length == 2) {
+                el.nextElementSibling.nextElementSibling.focus()
+            }
+        }) 
+        el.addEventListener('blur', function() {
+            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+            eventCalendarChangeTable(this.closest('.calendar'))
+        })
+    })
+    document.querySelectorAll('.input.month').forEach(el=>{
+        el.addEventListener('keydown', function(event) {            
+            
+        })  
+        el.addEventListener('input', function(event) {            
+            if (el.value.length == 2) {
+                el.nextElementSibling.nextElementSibling.focus()
+            }
+        }) 
+        el.addEventListener('blur', function() {
+            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+            eventCalendarChangeTable(this.closest('.calendar'))
+        })
+    })
+
+    document.querySelectorAll('.input.year').forEach(el=>{
+        el.addEventListener('blur', function() {
+            eventCalendarChangeTable(this.closest('.calendar'))
+        })
+    })
+
+
 }
 
 // window.addEventListener('click', (event)=> {
@@ -325,3 +375,10 @@ if (inputElements.length) {
 //     }
 // })
 
+
+document.querySelector('.accept-changes').addEventListener('click', function () {
+    let calendar = document.querySelector('.calendar.active')
+    calendar.classList.remove('active')
+    isEdit = false
+    checkToSetDate(calendar)
+})

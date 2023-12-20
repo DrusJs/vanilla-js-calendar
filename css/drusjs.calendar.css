@@ -80,6 +80,10 @@
     border: none;
     text-align: center;
     outline: none;
+    pointer-events: none;
+}
+.drusjs-calendar .calendar.active .input {
+    pointer-events: auto;
 }
 .drusjs-calendar .input.day {
     width: 28px;
@@ -170,6 +174,9 @@
 .drusjs-calendar .calendar-select-head.none-select .calendar-select-swap {
     pointer-events: none;
     opacity: .5;
+}
+.drusjs-calendar .calendar-select-head.none-active {
+    pointer-events: none;
 }
 .drusjs-calendar .calendar-select-swap {
     box-sizing: border-box;
@@ -392,4 +399,19 @@
     background-color: #2879FF;
     pointer-events: auto;
     cursor: pointer;
+}
+.calendar-error-field {
+    display: none;
+    gap: 8px;
+    align-items: flex-start;
+    color: #C80000;
+    font-size: 19px;
+    line-height: 26px;
+}
+
+.calendar-action-mobile {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
