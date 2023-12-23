@@ -1,13 +1,13 @@
-const calendarSelectValueElements = document.querySelectorAll('.calendar-select-value')
-const calendarFrom = document.querySelector('.js-from')
-const calendarTo = document.querySelector('.js-to')
-const calendarElement = document.querySelector('.drusjs-calendar')
 const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 const MONTH_ENDING = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] 
 const DATE = new Date()
 const NOW_YEAR = DATE.getFullYear()
 const LATE_YEAR = 1976
+
+const calendarFrom = document.querySelector('.js-from')
+const calendarTo = document.querySelector('.js-to')
+const calendarElement = document.querySelector('.drusjs-calendar')
 
 let isFirstDay = false
 let isPeriod = false
@@ -22,7 +22,7 @@ let dateFrom, dateTo = DATE
 Date.prototype.daysInMonth = function() {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
 }
-
+const calendarSelectValueElements = document.querySelectorAll('.calendar-select-value')
 if (calendarSelectValueElements.length) {
     for (let select of calendarSelectValueElements) {
         select.addEventListener('click', (event) => {
