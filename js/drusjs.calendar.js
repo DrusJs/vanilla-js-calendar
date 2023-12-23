@@ -40,6 +40,7 @@ function clearDateField(element, isDateFrom) {
     let container = element.closest('.calendar')
     container.classList.remove('complete')
     isDateFrom?dateFrom=null:dateTo=null
+    container.querySelectorAll('.calendar-table').innerHTML = ''
     clearInputs(container)
     container.querySelectorAll('.calendar-select-head').forEach(el=>{
         el.classList.add('none-select')
