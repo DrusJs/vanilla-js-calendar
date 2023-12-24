@@ -1,9 +1,9 @@
 const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 const MONTH_ENDING = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] 
-const DATE = new Date()
-const NOW_YEAR = DATE.getFullYear()
-const LATE_YEAR = 1976
+const NOW_DATE = new Date()
+const NOW_YEAR = NOW_DATE.getFullYear()
+const LATE_YEAR = 1996
 const ERROR_MESSAGES = ['Дата начала периода превышает дату окончания', 'Выберите дату не позднее сегодняшнего дня']
 
 const calendarElement = document.querySelector('.drusjs-calendar')
@@ -15,15 +15,15 @@ let isFirstDay = false
 let isPeriod = false
 let isTableToPath = false
 let isLastDay = false
-let isEdit = false
+
 let tempDate
-let dateFrom = ['','',''], dateTo = DATE
-
-
+let dateFrom = ['','','']
+let dateTo = NOW_DATE
 
 Date.prototype.daysInMonth = function() {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
 }
+
 const calendarSelectValueElements = document.querySelectorAll('.calendar-select-value')
 if (calendarSelectValueElements.length) {
     for (let select of calendarSelectValueElements) {
@@ -42,25 +42,21 @@ if (calendarSelectValueElements.length) {
 function isTO(calendar) {
     return calendar.classList.contains('js-to')
 }
+
 function isTOElement(element) {
     return calendarTo.contains(element)
 }
 
-
 function clearDateField(element, isDateFrom) {
-    if (!isEdit) {
         let container = element.closest('.calendar')
         container.classList.remove('complete')
-        isDateFrom?dateFrom=null:dateTo=null
+        isDateFrom?dateFrom=['','','']:dateTo=['','','']
         container.querySelectorAll('.calendar-table').innerHTML = ''
         clearInputs(container)
         container.querySelectorAll('.calendar-select-head').forEach(el=>{
             el.classList.add('none-select')
         })
-    }
 }
-
-
 
 function clearInputs(element) {
     element.querySelector('.input.day').value = ""
@@ -85,16 +81,14 @@ function checkToSetDate(calendar) {
             }
         }
         if (calendarTo.classList.contains('complete')) {
-            if (dateTo > DATE) {
-                console.log(dateTo, DATE);
+            if (dateTo > NOW_DATE) {
                 errorElement.classList.add('active')
                 errorElement.lastElementChild.innerHTML = ERROR_MESSAGES[1]
             }
         }
     } else {
         calendar.classList.remove('active')
-    }
-    
+    }    
 }
 
 function setDate(element, date) {
@@ -115,12 +109,13 @@ function setDate(element, date) {
 function createCompleteDate(date) {
     return `${setTwoDigitsValue(date.getDate())}  ${MONTH_ENDING[date.getMonth()]}  ${date.getFullYear()}`
 }
+
 function setTwoDigitsValue(date) {
     if (date=='') {return ''}
     return +date<10?'0'+date:date
 }
 
-setDate(calendarTo, DATE)
+setDate(calendarTo, NOW_DATE)
 
 function clearCalendars() {
     document.querySelectorAll('.calendar-table-cell.active').forEach(el=>{
@@ -275,12 +270,12 @@ function createYearFields(from, to) {
     })
     document.querySelectorAll('.year-select').forEach(el => {
         el.querySelector('.calendar-select-swap.left').addEventListener('click', (event)=> {
-            if (+event.currentTarget.nextElementSibling.innerHTML>LATE_YEAR) {
+            if (+event.currentTarget.nextElementSibling.innerHTML>=0) {
                 event.currentTarget.nextElementSibling.innerHTML = +event.currentTarget.nextElementSibling.innerHTML - 1
                 event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.nextElementSibling.innerHTML     
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
                 event.currentTarget.nextElementSibling.nextElementSibling.classList.remove('disabled-hide')
-                if (+event.currentTarget.nextElementSibling.innerHTML==LATE_YEAR) {
+                if (+event.currentTarget.nextElementSibling.innerHTML==0) {
                     event.currentTarget.classList.add('disabled-hide')
                 } 
             } else {
@@ -289,12 +284,12 @@ function createYearFields(from, to) {
       
         })
         el.querySelector('.calendar-select-swap.right').addEventListener('click', (event)=> {
-            if (+event.currentTarget.previousElementSibling.innerHTML<DATE.getFullYear()) {
+            if (+event.currentTarget.previousElementSibling.innerHTML<NOW_DATE.getFullYear()) {
                 event.currentTarget.previousElementSibling.innerHTML = +event.currentTarget.previousElementSibling.innerHTML + 1
                 event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.previousElementSibling.innerHTML 
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
                 event.currentTarget.previousElementSibling.previousElementSibling.classList.remove('disabled-hide')
-                if (+event.currentTarget.previousElementSibling.innerHTML>=DATE.getFullYear()) {
+                if (+event.currentTarget.previousElementSibling.innerHTML>=NOW_DATE.getFullYear()) {
                     event.currentTarget.classList.add('disabled-hide')
                 } 
             } else {
@@ -331,7 +326,7 @@ const calendarTableElements = document.querySelectorAll('.calendar-table')
 function createMonthTable(date, num) {
     let table = calendarTableElements[num]
     let temp = new Date(date.getFullYear(), date.getMonth(), 1)
-    let firstDay = WEEK.indexOf(WEEK[temp.getDay()-1])
+    let firstDay = +temp.getDay()-1
     if (firstDay==-1) {firstDay = 6}
     let cellCount = 1
     let dayCount = date.daysInMonth()
@@ -343,7 +338,6 @@ function createMonthTable(date, num) {
         for (let j=0; j<7; j++) {
             let element = !i?document.createElement('th'):document.createElement('td')
             element.classList.add('calendar-table-cell')
-            console.log(firstDay, cellCount);
             if (!i) { element.innerHTML = WEEK[j]; row.append(element); continue }
             if ((i==1 && j<firstDay) || cellCount>dayCount) { element.classList.add('empty'); row.append(element); continue }
             element.innerHTML = cellCount
@@ -361,22 +355,20 @@ const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
         item.addEventListener('click', (event) => {
-            if (!isEdit) {
-                document.querySelector('.calendar-action-bar').classList.remove('active')
-                let calendar =  event.currentTarget.parentElement
-                let self = event.currentTarget
-                isEdit = true
-                if (!self.classList.contains('active')) {
-                    calendar.classList.add('active')
-                    if (calendar.classList.contains('complete')) {
-                        calendar.classList.remove('complete')
-                        calendar.querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
-                        calendar.querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
-                        createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
-                        calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
-                    }
+            document.querySelector('.calendar-action-bar').classList.remove('active')
+            let calendar = event.currentTarget.parentElement
+            let self = event.currentTarget
+            if (!self.classList.contains('active')) {
+                calendar.classList.add('active')
+                if (calendar.classList.contains('complete')) {
+                    calendar.classList.remove('complete')
+                    calendar.querySelector('.year-select .calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
+                    calendar.querySelector('.month-select .calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
+                    createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
+                    calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
                 }
             }
+            isTO(calendar)?calendarFrom.firstElementChild.click():calendarTo.firstElementChild.click()
         })
     }
 }
@@ -420,10 +412,10 @@ if (inputElements.length) {
         el.addEventListener('input', function(event) {  
             if (+el.value>=1 && +el.value<=12) {
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.remove('none-select')
-                el.closest('.calendar').querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = MONTH[+el.value-1]
+                el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = MONTH[+el.value-1]
             } else {
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.add('none-select')
-                el.closest('.calendar').querySelector('.month-select').querySelector('.calendar-select-value').innerHTML = 'Выберите месяц'
+                el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = 'Выберите месяц'
             }          
             if (el.value.length == 2) {
                 el.nextElementSibling.nextElementSibling.focus()
@@ -456,9 +448,31 @@ if (inputElements.length) {
             eventCalendarChangeTable(this.closest('.calendar'))
         })
     })
-
-
 }
+
+document.querySelector('.accept-changes').addEventListener('click', function () {
+    document.querySelectorAll('.calendar').forEach(calendar => {
+        calendar.classList.remove('active')
+        checkToSetDate(calendar)
+    })
+    errorElement.classList.remove('active')
+})
+
+document.querySelector('.reset-changes').addEventListener('click', function () {
+    document.querySelectorAll('.calendar').forEach(calendar => {
+        calendar.classList.remove('active')
+        setDate(calendar, isTO(calendar)?dateTo:dateFrom)
+    })
+    errorElement.classList.remove('active')
+})
+
+document.querySelectorAll('.button-close, .button-back').forEach(el=>{
+    el.addEventListener('click', ()=>{
+        document.querySelector('.calendar-select.active').classList.remove('search')
+        document.querySelector('.calendar-select.active').classList.remove('active')
+        document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
+    })
+})
 
 window.addEventListener('click', (event)=> {
     if (!calendarElement.contains(event.target)) {
@@ -466,26 +480,4 @@ window.addEventListener('click', (event)=> {
             document.querySelector('.reset-changes').click()
         }
     }
-})
-
-document.querySelector('.accept-changes').addEventListener('click', function () {
-    let calendar = document.querySelector('.calendar.active')
-    calendar.classList.remove('active')
-    isEdit = false
-    errorElement.classList.remove('active')
-    checkToSetDate(calendar)
-})
-
-document.querySelector('.reset-changes').addEventListener('click', function () {
-    let calendar = document.querySelector('.calendar.active')
-    calendar.classList.remove('active')
-    isEdit = false
-    setDate(calendar, isTO(calendar)?dateTo:dateFrom)
-})
-
-document.querySelectorAll('.button-close, .button-back').forEach(el=>{
-    el.addEventListener('click', ()=>{
-        document.querySelector('.calendar-select.active').classList.remove('active')
-        document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
-    })
 })

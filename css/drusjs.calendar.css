@@ -21,7 +21,7 @@
 }
 .drusjs-calendar .disabled-hide {
     pointer-events: none;
-    opacity: .5;
+    /* opacity: .5; */
 }
 
 /*Удалить*/
@@ -39,9 +39,6 @@
     flex-direction: column;
     font-size: 19px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, .1);
-}
-.drusjs-calendar:has(.calendar.active) .calendar:not(.active) {
-    pointer-events: none;
 }
 
 .drusjs-calendar .calendar-main {
@@ -181,7 +178,7 @@
 }
 .drusjs-calendar .calendar-select-head.none-select .calendar-select-swap {
     pointer-events: none;
-    opacity: .5;
+    /* opacity: .5; */
 }
 .drusjs-calendar .calendar-select-head.none-active {
     pointer-events: none;
