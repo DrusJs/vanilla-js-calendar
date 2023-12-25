@@ -11,12 +11,7 @@ const calendarFrom = document.querySelector('.js-from')
 const calendarTo = document.querySelector('.js-to')
 const errorElement = document.querySelector('.calendar-error-field')
 
-let isFirstDay = false
-let isPeriod = false
-let isTableToPath = false
-let isLastDay = false
 
-let tempDate
 let dateFrom = ['','','']
 let dateTo = NOW_DATE
 
@@ -51,8 +46,11 @@ function clearDateField(element, isDateFrom) {
         let container = element.closest('.calendar')
         container.classList.remove('complete')
         isDateFrom?dateFrom=['','','']:dateTo=['','','']
-        container.querySelectorAll('.calendar-table').innerHTML = ''
+        container.querySelector('.calendar-table').innerHTML = ''
+        container.querySelector('.year-select .calendar-select-value').innerHTML = 'Выберите год'
+        container.querySelector('.month-select .calendar-select-value').innerHTML = 'Выберите месяц'
         clearInputs(container)
+        errorElement.classList.remove('active')
         container.querySelectorAll('.calendar-select-head').forEach(el=>{
             el.classList.add('none-select')
         })
@@ -75,6 +73,7 @@ function checkToSetDate(calendar) {
         setDate(calendar, date)
         if (document.querySelectorAll('.calendar.complete').length == 2) {
             if (dateFrom.getTime()>dateTo.getTime()) {
+                console.log(dateFrom, dateTo, dateFrom.getTime()> dateTo.getTime());
                 errorElement.classList.add('active')
                 errorElement.lastElementChild.innerHTML = ERROR_MESSAGES[0]
                 return
@@ -117,31 +116,37 @@ function setTwoDigitsValue(date) {
 
 setDate(calendarTo, NOW_DATE)
 
-function clearCalendars() {
-    document.querySelectorAll('.calendar-table-cell.active').forEach(el=>{
+function clearCalendar(table) {
+    table.querySelectorAll('.calendar-table-cell.active').forEach(el=>{
         el.classList.remove('active')
     })
-    document.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
+    table.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
         el.classList.remove('path')
     })
-
-    isFirstDay = false 
-    isPeriod = false
-    isTableToPath = false 
 }
 
-function setPath(table, day, isFirst) {
+function setPath(isFirst) {
     if (isFirst) {
+        let table = calendarFrom.querySelector('.calendar-table')
+        let day = table.querySelector('.active')
         let counter = +day.dataset.day + 1
         let temp = table.querySelector(`[data-day="${counter}"]`)
+        table.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
+            el.classList.remove('path')
+        })
         while (temp) {
             temp.classList.add('path')
             counter++
             temp = table.querySelector(`[data-day="${counter}"]`)
         }
     } else {
+        let table = calendarTo.querySelector('.calendar-table')
+        let day = table.querySelector('.active')
         let counter = 1
         let temp = table.querySelector(`[data-day="${counter}"]`)
+        table.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
+            el.classList.remove('path')
+        })
         while (temp!=day) {
             temp.classList.add('path')
             counter++
@@ -152,32 +157,22 @@ function setPath(table, day, isFirst) {
 
 function calendarTableCellAction(element) {
     if (element.classList.contains('active')) { return }
-    if (isPeriod) { clearCalendars() }
-    if (isLastDay) { isLastDay=false; document.querySelector('.calendar-table-cell.active').classList.remove('active') }
-    let table = element.closest('table.calendar-table')
+    let table = element.closest('table.calendar-table')   
     let activeCell = table.querySelector('.calendar-table-cell.active')
-    if (isFirstDay && isTableToPath && table.dataset.ind==0) { throw new Error('Начальный день больше конечного!') }
     if (activeCell) {
-        let pathLength = element.dataset.day - activeCell.dataset.day
-        if (pathLength<0) { throw new Error('Начальный день больше конечного!') }
-        for (let i=1; i<pathLength; i++) {
-            table.querySelector(`[data-day="${+activeCell.dataset.day + i}"]`).classList.add('path')
-        }
+        activeCell.classList.remove('active')
+    }
+    if (document.querySelector('.calendar-table-cell.active')) {
         element.classList.add('active')
-        isPeriod = true
-    } else if (isFirstDay) {
-                isPeriod = true
-                element.classList.add('active')
-                let pathTables = document.querySelectorAll('.calendar-table')
-                setPath(pathTables[0], pathTables[0].querySelector('.calendar-table-cell.active'), true)
-                setPath(pathTables[1], element, false)
-            } else {
-                element.classList.add('active')
-                element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
-                if (element.dataset.last) { isLastDay=true; return }
-                isFirstDay = true
-                if (table.dataset.ind==1) { isTableToPath = true }
-            }
+        element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
+        setPath(true)
+        setPath(false)
+    } else {
+        element.classList.add('active')
+        element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
+    } 
+    eventSetActiveBar(element.closest('.calendar'))
+
 }
 
 function eventCalendarChangeTable(calendar) {
@@ -185,9 +180,10 @@ function eventCalendarChangeTable(calendar) {
     let m = calendar.querySelector('.input.month').value
     let y = calendar.querySelector('.input.year').value
     if (m && y) {
-        clearCalendars()
+        clearCalendar(calendar.querySelector('.calendar-table'))
         isTO(calendar)?createMonthTable(new Date(y, m-1), 1):createMonthTable(new Date(y, m-1), 0)
         if (d) {
+            if (d[0]==0) {d=d[1]}
             calendar.querySelector(`[data-day="${d}"]`).click()
         }
     }
@@ -203,16 +199,20 @@ function eventSetActiveBar(calendar) {
         for (let i=0; i<3; i++) {
             if (temp[i] != checkDate[i]) {
                 document.querySelector('.calendar-action-bar').classList.add('active')
+                return
             }
         }
+        document.querySelector('.calendar-action-bar').classList.remove('active')
     } else {
         let temp = Array.isArray(dateFrom)?dateFrom:[dateFrom.getFullYear(), dateFrom.getMonth(), dateFrom.getDate()]
         let checkDate = [y, m-1, d]
         for (let i=0; i<3; i++) {
             if (temp[i] != checkDate[i]) {
                 document.querySelector('.calendar-action-bar').classList.add('active')
+                return
             }
         }
+        document.querySelector('.calendar-action-bar').classList.remove('active')
     }
 }
 
@@ -231,6 +231,7 @@ function createMonthFields(month) {
                 event.currentTarget.nextElementSibling.innerHTML = MONTH[MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)-1]
                 event.currentTarget.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)+1)
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                eventSetActiveBar(event.currentTarget.closest('.calendar'))
                 event.currentTarget.nextElementSibling.nextElementSibling.classList.remove('disabled-hide')
                 if (MONTH.indexOf(event.currentTarget.nextElementSibling.innerHTML)==0) {
                     event.currentTarget.classList.add('disabled-hide')
@@ -245,6 +246,7 @@ function createMonthFields(month) {
                 event.currentTarget.previousElementSibling.innerHTML = MONTH[MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)+1]
                 event.currentTarget.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)+1)
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                eventSetActiveBar(event.currentTarget.closest('.calendar'))
                 event.currentTarget.previousElementSibling.previousElementSibling.classList.remove('disabled-hide')
                 if (MONTH.indexOf(event.currentTarget.previousElementSibling.innerHTML)==11) {
                     event.currentTarget.classList.add('disabled-hide')
@@ -274,6 +276,7 @@ function createYearFields(from, to) {
                 event.currentTarget.nextElementSibling.innerHTML = +event.currentTarget.nextElementSibling.innerHTML - 1
                 event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.nextElementSibling.innerHTML     
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                eventSetActiveBar(event.currentTarget.closest('.calendar'))
                 event.currentTarget.nextElementSibling.nextElementSibling.classList.remove('disabled-hide')
                 if (+event.currentTarget.nextElementSibling.innerHTML==0) {
                     event.currentTarget.classList.add('disabled-hide')
@@ -288,6 +291,7 @@ function createYearFields(from, to) {
                 event.currentTarget.previousElementSibling.innerHTML = +event.currentTarget.previousElementSibling.innerHTML + 1
                 event.currentTarget.closest('.calendar').querySelector('.input.year').value = event.currentTarget.previousElementSibling.innerHTML 
                 eventCalendarChangeTable(event.currentTarget.closest('.calendar'))
+                eventSetActiveBar(event.currentTarget.closest('.calendar'))
                 event.currentTarget.previousElementSibling.previousElementSibling.classList.remove('disabled-hide')
                 if (+event.currentTarget.previousElementSibling.innerHTML>=NOW_DATE.getFullYear()) {
                     event.currentTarget.classList.add('disabled-hide')
@@ -316,6 +320,7 @@ if (calendarSelectDropdownElements.length) {
                     dropdown.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.innerHTML)+1)
                 }
                 eventCalendarChangeTable(dropdown.closest('.calendar'))
+                eventSetActiveBar(dropdown.closest('.calendar'))
             })
         })
     }
@@ -355,6 +360,7 @@ const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
         item.addEventListener('click', (event) => {
+            errorElement.classList.remove('active')
             document.querySelector('.calendar-action-bar').classList.remove('active')
             let calendar = event.currentTarget.parentElement
             let self = event.currentTarget
@@ -368,7 +374,9 @@ if (calendarMainElements.length) {
                     calendar.querySelector(`[data-day="${isTO(calendar)?dateTo.getDate():dateFrom.getDate()}"]`).click()
                 }
             }
-            isTO(calendar)?calendarFrom.firstElementChild.click():calendarTo.firstElementChild.click()
+            if (window.matchMedia('(min-width: 640px)').matches) {
+                isTO(calendar)?calendarFrom.firstElementChild.click():calendarTo.firstElementChild.click()
+            }
         })
     }
 }
@@ -399,9 +407,10 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
+            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+            eventSetActiveBar(this.closest('.calendar'))
             if (+this.nextElementSibling.nextElementSibling.value<1 || +this.nextElementSibling.nextElementSibling.value>12) {return}
             if (+this.parentElement.lastElementChild.value<LATE_YEAR || +this.parentElement.lastElementChild.value>NOW_YEAR) {return}
-            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
             eventCalendarChangeTable(this.closest('.calendar'))
         })
     })
@@ -422,9 +431,10 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
-            if (+this.value<1 || +this.value>12) {return}
-            if (+this.nextElementSibling.nextElementSibling.value<LATE_YEAR || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}
             this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+            if (+this.value<1 || +this.value>12) {return}
+            eventSetActiveBar(this.closest('.calendar'))
+            if (+this.nextElementSibling.nextElementSibling.value<LATE_YEAR || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}            
             eventCalendarChangeTable(this.closest('.calendar'))
         })
     })
@@ -444,6 +454,7 @@ if (inputElements.length) {
         }) 
         el.addEventListener('blur', function() {
             if (+this.value<LATE_YEAR || +this.value>NOW_YEAR) {return}
+            eventSetActiveBar(this.closest('.calendar'))
             if (+this.previousElementSibling.previousElementSibling.value<1 || +this.previousElementSibling.previousElementSibling.value>12) {return}
             eventCalendarChangeTable(this.closest('.calendar'))
         })
@@ -451,19 +462,19 @@ if (inputElements.length) {
 }
 
 document.querySelector('.accept-changes').addEventListener('click', function () {
+    errorElement.classList.remove('active')
     document.querySelectorAll('.calendar').forEach(calendar => {
         calendar.classList.remove('active')
         checkToSetDate(calendar)
     })
-    errorElement.classList.remove('active')
 })
 
 document.querySelector('.reset-changes').addEventListener('click', function () {
+    errorElement.classList.remove('active')
     document.querySelectorAll('.calendar').forEach(calendar => {
         calendar.classList.remove('active')
         setDate(calendar, isTO(calendar)?dateTo:dateFrom)
     })
-    errorElement.classList.remove('active')
 })
 
 document.querySelectorAll('.button-close, .button-back').forEach(el=>{
