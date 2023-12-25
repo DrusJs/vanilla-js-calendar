@@ -14,6 +14,7 @@ const errorElement = document.querySelector('.calendar-error-field')
 
 let dateFrom = ['','','']
 let dateTo = NOW_DATE
+let tempInputValue
 
 Date.prototype.daysInMonth = function() {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
@@ -87,6 +88,11 @@ function checkToSetDate(calendar) {
         }
     } else {
         calendar.classList.remove('active')
+        calendar.querySelector('.calendar-table').innerHTML = ''
+        calendar.querySelector('.year-select .calendar-select-value').innerHTML = 'Выберите год'
+        calendar.querySelector('.month-select .calendar-select-value').innerHTML = 'Выберите месяц'
+        clearInputs(calendar)
+        isTO(calendar)?dateTo=['','','']:dateFrom=['','','']
     }    
 }
 
@@ -399,7 +405,7 @@ if (inputElements.length) {
 
     document.querySelectorAll('.input.day').forEach(el=>{
         el.addEventListener('keydown', function(event) {
-            
+            console.log(el.value);
         })
         el.addEventListener('input', function(event) {            
             if (el.value.length == 2) {
@@ -410,7 +416,7 @@ if (inputElements.length) {
             this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
             eventSetActiveBar(this.closest('.calendar'))
             if (+this.nextElementSibling.nextElementSibling.value<1 || +this.nextElementSibling.nextElementSibling.value>12) {return}
-            if (+this.parentElement.lastElementChild.value<LATE_YEAR || +this.parentElement.lastElementChild.value>NOW_YEAR) {return}
+            if (+this.parentElement.lastElementChild.value<0 || +this.parentElement.lastElementChild.value>NOW_YEAR) {return}
             eventCalendarChangeTable(this.closest('.calendar'))
         })
     })
@@ -423,6 +429,7 @@ if (inputElements.length) {
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.remove('none-select')
                 el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = MONTH[+el.value-1]
             } else {
+                if (+el.value>12) {el.value = 12}
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.add('none-select')
                 el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = 'Выберите месяц'
             }          
@@ -434,14 +441,14 @@ if (inputElements.length) {
             this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
             if (+this.value<1 || +this.value>12) {return}
             eventSetActiveBar(this.closest('.calendar'))
-            if (+this.nextElementSibling.nextElementSibling.value<LATE_YEAR || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}            
+            if (+this.nextElementSibling.nextElementSibling.value<0 || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}            
             eventCalendarChangeTable(this.closest('.calendar'))
         })
     })
 
     document.querySelectorAll('.input.year').forEach(el=>{
         el.addEventListener('input', function(event) {            
-            if (+el.value>=LATE_YEAR && +el.value<=NOW_YEAR) {
+            if (+el.value>=0 && +el.value<=NOW_YEAR) {
                 el.closest('.calendar').querySelector('.year-select').firstElementChild.classList.remove('none-select')
                 el.closest('.calendar').querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = el.value
             } else {
@@ -452,8 +459,17 @@ if (inputElements.length) {
                 el.blur()
             }
         }) 
+        el.addEventListener('keydown', function(event) { 
+                      
+            if (el.value == '') {
+                if (event.key != 1 || event.key != 2) {return}
+            }
+            if (el.value == 1) {
+                if (event.key != 9) { return }
+            }
+        }) 
         el.addEventListener('blur', function() {
-            if (+this.value<LATE_YEAR || +this.value>NOW_YEAR) {return}
+            if (+this.value<0 || +this.value>NOW_YEAR) {return}
             eventSetActiveBar(this.closest('.calendar'))
             if (+this.previousElementSibling.previousElementSibling.value<1 || +this.previousElementSibling.previousElementSibling.value>12) {return}
             eventCalendarChangeTable(this.closest('.calendar'))
