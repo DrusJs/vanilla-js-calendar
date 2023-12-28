@@ -564,6 +564,9 @@
         content: 'ДО';
         font-size: 19px;
     }
+    .drusjs-calendar .year-select .calendar-select-dropdown__item {
+        line-height: 21px;
+    }
 }
 
 @media (max-width: 639px) {

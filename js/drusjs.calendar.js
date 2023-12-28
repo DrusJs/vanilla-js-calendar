@@ -25,8 +25,16 @@ const calendarSelectValueElements = document.querySelectorAll('.calendar-select-
 if (calendarSelectValueElements.length) {
     for (let select of calendarSelectValueElements) {
         select.addEventListener('click', (event) => {
-            if (event.currentTarget.closest('.month-select') && event.currentTarget.closest('.calendar').querySelector('.input.year').value == "") {return}   
-            event.currentTarget.closest('.calendar-select').classList.toggle('active')
+            if (event.currentTarget.closest('.month-select') && event.currentTarget.closest('.calendar').querySelector('.input.year').value == "") {return}
+            let cont = event.currentTarget.closest('.calendar-select')
+            if (cont.classList.contains('active')) {
+                cont.classList.remove('active')
+            } else {
+                if (document.querySelector('.calendar-select.active')) {
+                    document.querySelector('.calendar-select.active').classList.remove('active')
+                }
+                cont.classList.add('active')
+            }
             if (event.currentTarget.closest('.month-select')) {
                 document.querySelector('.calendar-top-text').innerHTML = 'Выберите месяц'
             } else {
