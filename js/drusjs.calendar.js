@@ -486,13 +486,13 @@ document.querySelectorAll('.input-search').forEach(element=>{
     element.addEventListener('input', function() {
         let filter = this.parentElement.previousElementSibling
         tempArray = []
-        if (this.value.length == 4) {
+        console.log();
+        if (this.value.length == 4 && (!String(this.value).indexOf(2) || !String(this.value).indexOf(19))) {
             document.querySelector('.calendar-action-bar').classList.add('active')
         } else {            
             document.querySelector('.calendar-action-bar').classList.remove('active')
         }
         yearArray.forEach(el=>{
-            console.log(el);
             if (String(el).indexOf(this.value) == 0) {
                 tempArray.push(el)
             }
