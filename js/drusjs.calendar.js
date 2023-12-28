@@ -418,7 +418,7 @@ if (inputElements.length) {
 
     document.querySelectorAll('.input.day').forEach(el=>{
         el.addEventListener('keydown', function(event) {
-            console.log(el.value);
+
         })
         el.addEventListener('input', function(event) {            
             if (el.value.length == 2) {
@@ -426,6 +426,7 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
+            if (+this.value>31) {this.value = 31}
             this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
             eventSetActiveBar(this.closest('.calendar'))
             if (+this.nextElementSibling.nextElementSibling.value<1 || +this.nextElementSibling.nextElementSibling.value>12) {return}
@@ -437,7 +438,7 @@ if (inputElements.length) {
         el.addEventListener('keydown', function(event) {            
             
         })  
-        el.addEventListener('input', function(event) {  
+        el.addEventListener('input', function(event) { 
             if (+el.value>=1 && +el.value<=12) {
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.remove('none-select')
                 el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = MONTH[+el.value-1]
@@ -451,6 +452,7 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
+            if (+this.value>12) {this.value = 12}
             this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
             if (+this.value<1 || +this.value>12) {return}
             eventSetActiveBar(this.closest('.calendar'))
