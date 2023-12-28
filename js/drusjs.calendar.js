@@ -539,12 +539,16 @@ document.querySelector('.accept-changes').addEventListener('click', function () 
 })
 
 document.querySelector('.reset-changes').addEventListener('click', function () {
-    errorElement.classList.remove('active')
-    document.querySelectorAll('.calendar').forEach(calendar => {
-        calendar.classList.remove('active')
-        calendar.classList.remove('clear')
-        setDate(calendar, isTO(calendar)?dateTo:dateFrom)
-    })
+    if (document.querySelector('.year-select.active')) {
+        document.querySelector('.year-select.active').classList.remove('active')
+    } else {
+        errorElement.classList.remove('active')
+        document.querySelectorAll('.calendar').forEach(calendar => {
+            calendar.classList.remove('active')
+            calendar.classList.remove('clear')
+            setDate(calendar, isTO(calendar)?dateTo:dateFrom)
+        })
+    }
 })
 
 document.querySelectorAll('.button-close, .button-back').forEach(el=>{
