@@ -207,9 +207,20 @@
 .calendar-search-select .input-search {
     text-align: center;
     font-size: 19px;
+    width: var(--primary-width);
     color: #2879FF;
+    background-color: transparent;
+    background-image: url(../images/material-symbols_search.svg);
+    background-repeat: no-repeat;
+    background-position: top 0px left 0px;
+    background-size: 24px 24px;
     border: none;
     outline: none;
+}
+.calendar-search-select .input-search::placeholder {
+    color: #000;
+    opacity: 0;
+    font-weight: 700;
 }
 .calendar-select.active .calendar-search-select {
     display: flex;
@@ -314,8 +325,9 @@
     top: var(--primary-height);
     display: none;
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(20, min-content);
     padding: 10px;
-    gap: 5px;
+    gap: 15px;
 }
 .drusjs-calendar .calendar-select-dropdown__item {
     box-sizing: border-box;
@@ -513,7 +525,7 @@
 }
 .drusjs-calendar .calendar-top-text {
     font-size: 19px;
-    color: #2879FF;
+    color: #000000;
     line-height: 21px;
     font-weight: 700;
     text-align: center;
@@ -640,6 +652,9 @@
     .drusjs-calendar .calendar-select.month-select.active .calendar-select-dropdown {
         display: grid;
     }
+    .calendar-select.active .calendar-select-dropdown {
+        box-shadow: 0 30px 0 30px #FFFFFF;
+    }
     .month-select .calendar-select-dropdown {
         position: absolute;
         background-color: #FFFFFF;
@@ -656,6 +671,7 @@
         top: var(--primary-height);
         display: none;
         grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(20, min-content);
         padding: 10px;
         gap: 5px;
     }
@@ -677,8 +693,49 @@
     .drusjs-calendar .calendar-table-overflow {
         max-height: calc(100vh - 370px);
     }
+    .drusjs-calendar .calendar-table-overflow:has(.active) {        
+        min-height: calc(100vh - 370px);
+    }
     .drusjs-calendar .calendar-select-dropdown {
-        max-height: calc(100vh - 370px);
+        max-height: calc(100vh - 270px);
+        min-height: calc(100vh - 270px);
+    }
+    .drusjs-calendar .calendar-search-select {
+        top: calc(0px - var(--primary-height))
+    }
+    .year-select .calendar-select-dropdown {
+        top: 0px;
+        border: none;
+    }
+    .calendar-select.active .calendar-search-select {
+        border: none;
+        width: 100vw;
+        left: calc((var(--primary-width) - 100vw) / 2);
+        background-color: #D4F6FF;
+        text-align: left;
+        
+    }
+    .calendar-select.active .calendar-search-select:has(input:focus) {
+        background-color: #FFFFFF;
+    }
+    .calendar-search-select .input-search {
+        color: #000;
+        text-align: left;
+        padding-left: 30px;
+        margin-left: 30px;
+        line-height: 24px;
+    }
+    .calendar-search-select .input-search:focus::placeholder {
+        opacity: 0;
+    }
+    .calendar-search-select .input-search::placeholder {
+        color: #000;
+        opacity: 1;
+        font-weight: 700;
+    }
+    .drusjs-calendar .calendar, 
+    .drusjs-calendar .calendar-action-bar {
+        box-shadow: none;
     }
 }
 
@@ -735,6 +792,7 @@
     }
     .drusjs-calendar .calendar-select-dropdown {
         max-height: calc(100vh - 276px);
+        min-height: calc(100vh - 276px);
     }
     .drusjs-calendar .calendar-action-bar .reset-changes, .drusjs-calendar .calendar-action-bar .accept-changes {
         height: 41px;
@@ -745,5 +803,8 @@
     }
     .month-select .calendar-select-dropdown {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .year-select .calendar-select-dropdown {
+        gap: 6px;
     }
 }
