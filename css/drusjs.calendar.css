@@ -178,10 +178,36 @@
 }
 .drusjs-calendar .calendar-select-head.none-select .calendar-select-swap {
     pointer-events: none;
-    /* opacity: .5; */
 }
 .drusjs-calendar .calendar-select-head.none-active {
     pointer-events: none;
+}
+.calendar-search-select {
+    position: absolute;
+    top: 0;
+    width: var(--primary-width);
+    height: var(--primary-height);
+    border: 0.5px solid #969FA8;
+    background-color: #FFF;
+    border-top: none;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    box-sizing: border-box;
+    display: none;
+    pointer-events: none;
+}
+.calendar-search-select .input-search {
+    text-align: center;
+    font-size: 19px;
+    color: #2879FF;
+    border: none;
+    outline: none;
+}
+.calendar-select.active .calendar-search-select {
+    display: flex;
+    pointer-events: auto;
+    z-index: 10;
 }
 .drusjs-calendar .calendar-select-swap {
     box-sizing: border-box;
@@ -230,6 +256,9 @@
     background-size: contain;
     transform: rotate(180deg);
 }
+.drusjs-calendar .calendar-select.year-select .calendar-select-value::after {
+    display: none;
+}
 .drusjs-calendar .calendar-select.active .calendar-select-value::after {
     transform: rotate(0deg);
 }
@@ -240,6 +269,7 @@
     width: 100%;
     max-width: var(--primary-width);
     max-height: 305px;
+    min-height: var(--primary-height);
     overflow-y: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -255,6 +285,28 @@
 .drusjs-calendar .calendar-select.active .calendar-select-dropdown {
     display: block;
 }
+.drusjs-calendar .calendar-select.year-select.active .calendar-select-dropdown {
+    display: grid;
+}
+.year-select .calendar-select-dropdown {
+    position: absolute;
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: var(--primary-width);
+    max-height: 305px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    z-index: 1;
+    border: 0.5px solid #969FA8;
+    box-sizing: border-box;
+    border-top: none;
+    top: var(--primary-height);
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 10px;
+    gap: 5px;
+}
 .drusjs-calendar .calendar-select-dropdown__item {
     box-sizing: border-box;
     color: #2961FE;
@@ -265,6 +317,19 @@
     border-top: none;
     text-align: center;
     line-height: var(--primary-height);
+    cursor: pointer;
+}
+
+.drusjs-calendar .year-select .calendar-select-dropdown__item {
+    box-sizing: border-box;
+    width: 100%;
+    height: var(--primary-height);
+    max-height: 51px;
+    padding: 10px;   
+    border: 0.5px solid #000000;
+    color: #000000;
+    text-align: center;
+    line-height: 29px;
     cursor: pointer;
 }
 
@@ -339,6 +404,9 @@
 .drusjs-calendar .calendar.complete .calendar-main-inner {
     background-position: right 12px top 8px;
 }
+.drusjs-calendar .calendar.clear .calendar-main-inner {
+    background-position: right 0px top 8px;
+}
 
 .drusjs-calendar .calendar.complete .input,
 .drusjs-calendar .calendar.complete .dot {
@@ -348,7 +416,8 @@
     display: block;
 }
 
-.drusjs-calendar .calendar.complete .clear-button {
+.drusjs-calendar .calendar.complete .clear-button,
+.drusjs-calendar .calendar.active.clear .clear-button {
     display: flex;
 }
 
@@ -441,6 +510,10 @@
     width: fit-content;
 }
 
+.drusjs-calendar .year-select .calendar-select-dropdown__item:active {
+    background-color: #d2d2d2;
+}
+
 @media (min-width: 740px) {
     .drusjs-calendar .calendar-select-dropdown__item:hover {
         background-color: #EFF0F0;
@@ -477,6 +550,9 @@
     .drusjs-calendar .calendar .calendar-main-inner {
         background-position: right 28px top 4px;
     }
+    .drusjs-calendar .calendar.clear .calendar-main-inner {
+        background-position: right 0px top 4px;
+    }
     .drusjs-calendar .calendar.complete .calendar-main__text {
         font-size: 0px;
     }
@@ -507,6 +583,9 @@
     }
     .drusjs-calendar .calendar.complete .calendar-main-inner {
         background-position: right 12px top 13px;
+    }
+    .drusjs-calendar .calendar.clear .calendar-main-inner {
+        background-position: right 0px top 13px;
     }
     .drusjs-calendar .calendar .calendar-main-inner {
         background-position: right 28px top 13px;
@@ -544,6 +623,40 @@
     .drusjs-calendar .calendar-select-dropdown {
         max-height: calc(100vh - 370px);
     }
+    .drusjs-calendar .calendar-select.month-select.active .calendar-select-dropdown {
+        display: grid;
+    }
+    .month-select .calendar-select-dropdown {
+        position: absolute;
+        background-color: #FFFFFF;
+        width: 100%;
+        max-width: var(--primary-width);
+        max-height: 305px;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        z-index: 1;
+        border: 0.5px solid #969FA8;
+        box-sizing: border-box;
+        border-top: none;
+        top: var(--primary-height);
+        display: none;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 10px;
+        gap: 5px;
+    }
+    .drusjs-calendar .month-select .calendar-select-dropdown__item {
+        box-sizing: border-box;
+        width: 100%;
+        height: var(--primary-height);
+        max-height: 51px;
+        padding: 10px;   
+        border: 0.5px solid #000000;
+        color: #000000;
+        text-align: center;
+        line-height: 29px;
+        cursor: pointer;
+    }
 }
 
 @media (max-width: 549px) {
@@ -563,6 +676,9 @@
         width: 31px;
     }
     .drusjs-calendar .calendar.complete .calendar-main-inner {
+        background-image: none;
+    }
+    .drusjs-calendar .calendar.clear .calendar-main-inner {
         background-image: none;
     }
     .drusjs-calendar .calendar .calendar-main-inner {
@@ -599,5 +715,8 @@
     }
     .drusjs-calendar .calendar-action-bar .reset-changes, .drusjs-calendar .calendar-action-bar .accept-changes {
         height: 41px;
+    }
+    .drusjs-calendar .year-select .calendar-select-dropdown__item {
+        line-height: 19px;
     }
 }

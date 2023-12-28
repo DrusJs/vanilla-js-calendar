@@ -15,6 +15,7 @@ const errorElement = document.querySelector('.calendar-error-field')
 let dateFrom = ['','','']
 let dateTo = NOW_DATE
 let tempInputValue
+let yearArray = new Array(), tempArray = new Array()
 
 Date.prototype.daysInMonth = function() {
     return 33 - new Date(this.getFullYear(), this.getMonth(), 33).getDate()
@@ -46,6 +47,7 @@ function isTOElement(element) {
 function clearDateField(element, isDateFrom) {
         let container = element.closest('.calendar')
         container.classList.remove('complete')
+        container.classList.remove('clear')
         isDateFrom?dateFrom=['','','']:dateTo=['','','']
         container.querySelector('.calendar-table').innerHTML = ''
         container.querySelector('.year-select .calendar-select-value').innerHTML = 'Выберите год'
@@ -269,10 +271,12 @@ createMonthFields(MONTH)
 
 function createYearFields(from, to) {
     document.querySelectorAll('.year-select .calendar-select-dropdown').forEach(el => {
+        yearArray = []
         for (let i=0; i<=to-from; i++) {
             let element = document.createElement('div')
             element.classList.add('calendar-select-dropdown__item')
             element.innerHTML = to - i
+            yearArray.push(to-i)
             el.append(element)
         }
     })
@@ -374,6 +378,7 @@ if (calendarMainElements.length) {
                 calendar.classList.add('active')
                 if (calendar.classList.contains('complete')) {
                     calendar.classList.remove('complete')
+                    calendar.classList.add('clear')
                     calendar.querySelector('.year-select .calendar-select-value').innerHTML = isTO(calendar)?dateTo.getFullYear():dateFrom.getFullYear()
                     calendar.querySelector('.month-select .calendar-select-value').innerHTML = isTO(calendar)?MONTH[dateTo.getMonth()]:MONTH[dateFrom.getMonth()]
                     createMonthTable(isTO(calendar)?dateTo:dateFrom, isTO(calendar)?1:0)
@@ -477,18 +482,67 @@ if (inputElements.length) {
     })
 }
 
-document.querySelector('.accept-changes').addEventListener('click', function () {
-    errorElement.classList.remove('active')
-    document.querySelectorAll('.calendar').forEach(calendar => {
-        calendar.classList.remove('active')
-        checkToSetDate(calendar)
+document.querySelectorAll('.input-search').forEach(element=>{
+    element.addEventListener('input', function() {
+        let filter = this.parentElement.previousElementSibling
+        tempArray = []
+        if (this.value.length == 4) {
+            document.querySelector('.calendar-action-bar').classList.add('active')
+        } else {            
+            document.querySelector('.calendar-action-bar').classList.remove('active')
+        }
+        yearArray.forEach(el=>{
+            console.log(el);
+            if (String(el).indexOf(this.value) == 0) {
+                tempArray.push(el)
+            }
+        })
+        filter.innerHTML = ''
+        for (let i=0; i<tempArray.length; i++) {
+            let element = document.createElement('div')
+            element.classList.add('calendar-select-dropdown__item')
+            element.innerHTML = tempArray[i]
+            filter.append(element)
+        }
+        filter.querySelectorAll('.calendar-select-dropdown__item').forEach(el => {
+            el.addEventListener('click', (event) => {
+                document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
+                filter.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML
+                filter.parentElement.firstElementChild.classList.remove('none-select')             
+                event.currentTarget.closest('.calendar-select').classList.remove('active')
+                if (filter.parentElement.classList.contains('year-select')) {
+                    filter.closest('.calendar').querySelector('.input.year').value = event.currentTarget.innerHTML
+                } else {
+                    filter.closest('.calendar').querySelector('.input.month').value = setTwoDigitsValue(+MONTH.indexOf(event.currentTarget.innerHTML)+1)
+                }
+                eventCalendarChangeTable(filter.closest('.calendar'))
+                eventSetActiveBar(filter.closest('.calendar'))
+            })
+        })
     })
+})
+
+document.querySelector('.accept-changes').addEventListener('click', function () {
+    if (document.querySelector('.year-select.active')) {
+        let val = document.querySelector('.year-select.active .input-search').value
+        document.querySelector('.year-select.active').closest('.calendar').querySelector('.input.year').value = val
+        document.querySelector('.year-select.active').querySelector('.calendar-select-value').innerHTML = val
+        document.querySelector('.year-select.active').classList.remove('active')
+    } else {
+        errorElement.classList.remove('active')
+        document.querySelectorAll('.calendar').forEach(calendar => {
+            calendar.classList.remove('active')
+            calendar.classList.remove('clear')
+            checkToSetDate(calendar)
+        })
+    }
 })
 
 document.querySelector('.reset-changes').addEventListener('click', function () {
     errorElement.classList.remove('active')
     document.querySelectorAll('.calendar').forEach(calendar => {
         calendar.classList.remove('active')
+        calendar.classList.remove('clear')
         setDate(calendar, isTO(calendar)?dateTo:dateFrom)
     })
 })
