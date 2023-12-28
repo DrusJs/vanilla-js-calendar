@@ -353,14 +353,15 @@
     border-top: none;
 }
 .drusjs-calendar .calendar-table-overflow {
-    max-height: calc(100vh - 370px);
+    max-height: calc(100vh - 230px);
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
 .drusjs-calendar .calendar-table-overflow::-webkit-scrollbar {
-    display: none50}
+    display: none;
+}
 .drusjs-calendar .calendar-table-cell {
     box-sizing: border-box;
     min-width: var(--primary-height);
@@ -671,6 +672,12 @@
     }
     .drusjs-calendar:has(.calendar-select.active) .calendar-action-bar {
         margin-top: 0;
+    }
+    .drusjs-calendar .calendar-table-overflow {
+        max-height: calc(100vh - 370px);
+    }
+    .drusjs-calendar .calendar-select-dropdown {
+        max-height: calc(100vh - 370px);
     }
 }
 

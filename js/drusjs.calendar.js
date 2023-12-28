@@ -12,6 +12,7 @@ const calendarTo = document.querySelector('.js-to')
 const errorElement = document.querySelector('.calendar-error-field')
 
 
+let tempCheck = false
 let dateFrom = ['','','']
 let dateTo = NOW_DATE
 let tempInputValue
@@ -212,6 +213,7 @@ function eventSetActiveBar(calendar) {
     if (isTO(calendar)) {
         let temp = Array.isArray(dateTo)?dateTo:[dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate()]
         let checkDate = [y, m-1, d]
+        console.log(temp[2], checkDate[2]);
         for (let i=0; i<3; i++) {
             if (temp[i] != checkDate[i]) {
                 document.querySelector('.calendar-action-bar').classList.add('active')
@@ -377,10 +379,11 @@ function createMonthTable(date, num) {
 const calendarMainElements = document.querySelectorAll('.calendar-main')
 if (calendarMainElements.length) {
     for (let item of calendarMainElements) {
-        item.addEventListener('click', (event) => {
+        item.addEventListener('click', (event) => {            
+            let calendar = event.currentTarget.parentElement
+            if (calendar.classList.contains('active')) { return }
             errorElement.classList.remove('active')
             document.querySelector('.calendar-action-bar').classList.remove('active')
-            let calendar = event.currentTarget.parentElement
             let self = event.currentTarget
             if (!self.classList.contains('active')) {
                 calendar.classList.add('active')
@@ -420,30 +423,36 @@ if (inputElements.length) {
         el.addEventListener('keydown', function(event) {
 
         })
-        el.addEventListener('input', function(event) {            
+        el.addEventListener('input', function(event) {  
+            tempCheck = true          
             if (el.value.length == 2) {
                 el.nextElementSibling.nextElementSibling.focus()
             }
         }) 
         el.addEventListener('blur', function() {
-            if (+this.value>31) {this.value = 31}
-            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
-            eventSetActiveBar(this.closest('.calendar'))
-            if (+this.nextElementSibling.nextElementSibling.value<1 || +this.nextElementSibling.nextElementSibling.value>12) {return}
-            if (+this.parentElement.lastElementChild.value<0 || +this.parentElement.lastElementChild.value>NOW_YEAR) {return}
-            eventCalendarChangeTable(this.closest('.calendar'))
+            if (tempCheck) {
+                if (+this.value>31) {this.value = 31}
+                this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+                eventSetActiveBar(this.closest('.calendar'))
+                if (+this.nextElementSibling.nextElementSibling.value<1 || +this.nextElementSibling.nextElementSibling.value>12) {return}
+                if (+this.parentElement.lastElementChild.value<0 || +this.parentElement.lastElementChild.value>NOW_YEAR) {return}
+                eventCalendarChangeTable(this.closest('.calendar'))
+            }
+            tempCheck = false
+
         })
     })
     document.querySelectorAll('.input.month').forEach(el=>{
         el.addEventListener('keydown', function(event) {            
             
         })  
-        el.addEventListener('input', function(event) { 
+        el.addEventListener('input', function(event) {    
+            tempCheck = true           
+            if (+el.value>12) {el.value = 12}
             if (+el.value>=1 && +el.value<=12) {
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.remove('none-select')
                 el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = MONTH[+el.value-1]
             } else {
-                if (+el.value>12) {el.value = 12}
                 el.closest('.calendar').querySelector('.month-select').firstElementChild.classList.add('none-select')
                 el.closest('.calendar').querySelector('.month-select .calendar-select-value').innerHTML = 'Выберите месяц'
             }          
@@ -452,17 +461,21 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
-            if (+this.value>12) {this.value = 12}
-            this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
-            if (+this.value<1 || +this.value>12) {return}
-            eventSetActiveBar(this.closest('.calendar'))
-            if (+this.nextElementSibling.nextElementSibling.value<0 || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}            
-            eventCalendarChangeTable(this.closest('.calendar'))
+            if (tempCheck) {
+                if (+this.value>12) {this.value = 12}
+                this.value = this.value.length==1?setTwoDigitsValue(this.value):this.value
+                if (+this.value<1 || +this.value>12) {return}
+                eventSetActiveBar(this.closest('.calendar'))
+                if (+this.nextElementSibling.nextElementSibling.value<0 || +this.nextElementSibling.nextElementSibling.value>NOW_YEAR) {return}            
+                eventCalendarChangeTable(this.closest('.calendar'))
+            }
+            tempCheck = false
         })
     })
 
     document.querySelectorAll('.input.year').forEach(el=>{
-        el.addEventListener('input', function(event) {            
+        el.addEventListener('input', function(event) {      
+            tempCheck = true         
             if (+el.value>=0 && +el.value<=NOW_YEAR) {
                 el.closest('.calendar').querySelector('.year-select').firstElementChild.classList.remove('none-select')
                 el.closest('.calendar').querySelector('.year-select').querySelector('.calendar-select-value').innerHTML = el.value
@@ -484,10 +497,13 @@ if (inputElements.length) {
             }
         }) 
         el.addEventListener('blur', function() {
-            if (+this.value<0 || +this.value>NOW_YEAR) {return}
-            eventSetActiveBar(this.closest('.calendar'))
-            if (+this.previousElementSibling.previousElementSibling.value<1 || +this.previousElementSibling.previousElementSibling.value>12) {return}
-            eventCalendarChangeTable(this.closest('.calendar'))
+            if (tempCheck) {
+                if (+this.value<0 || +this.value>NOW_YEAR) {return}
+                eventSetActiveBar(this.closest('.calendar'))
+                if (+this.previousElementSibling.previousElementSibling.value<1 || +this.previousElementSibling.previousElementSibling.value>12) {return}
+                eventCalendarChangeTable(this.closest('.calendar'))
+            }
+            tempCheck = false
         })
     })
 }
@@ -496,7 +512,6 @@ document.querySelectorAll('.input-search').forEach(element=>{
     element.addEventListener('input', function() {
         let filter = this.parentElement.previousElementSibling
         tempArray = []
-        console.log();
         if (this.value.length == 4 && (!String(this.value).indexOf(2) || !String(this.value).indexOf(19))) {
             document.querySelector('.calendar-action-bar').classList.add('active')
         } else {            
