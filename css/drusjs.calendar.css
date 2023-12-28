@@ -210,7 +210,6 @@
     width: var(--primary-width);
     color: #2879FF;
     background-color: transparent;
-    background-image: url(../images/material-symbols_search.svg);
     background-repeat: no-repeat;
     background-position: top 0px left 0px;
     background-size: 24px 24px;
@@ -553,6 +552,7 @@
     .drusjs-calendar .calendar-action-bar .reset-changes:hover {
         text-decoration-color: #2879FF;
     }
+
 }
 
 @media (max-width: 739px) and (min-width: 640px) {
@@ -560,6 +560,9 @@
         --primary-height: 43px;
         --primary-width: 302px;
         --primary-cell-height: 40px;
+    }
+    .year-select .calendar-select-dropdown {
+        gap: 6px;
     }
     .drusjs-calendar .calendar-main-inner, .drusjs-calendar .clear-button {
         height: 33px;
@@ -736,6 +739,9 @@
     .drusjs-calendar .calendar, 
     .drusjs-calendar .calendar-action-bar {
         box-shadow: none;
+    }
+    .calendar-search-select .input-search {
+        background-image: url(../images/material-symbols_search.svg);
     }
 }
 
