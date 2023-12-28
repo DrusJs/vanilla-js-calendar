@@ -743,6 +743,16 @@
     .calendar-search-select .input-search {
         background-image: url(../images/material-symbols_search.svg);
     }
+    .drusjs-calendar .calendar:has(.month-select.active) .calendar-main,
+    .drusjs-calendar .calendar:has(.month-select.active) .year-select,
+    .drusjs-calendar .calendar:has(.month-select.active) .month-select .calendar-select-head,
+    .drusjs-calendar .calendar:has(.month-select.active) .calendar-table {
+        display: none;
+    }
+    .drusjs-calendar .calendar:has(.month-select.active) .month-select .calendar-select-dropdown {
+        border: none;
+        top: 0;
+    }
 }
 
 @media (max-width: 549px) {
