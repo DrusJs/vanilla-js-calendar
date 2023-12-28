@@ -64,7 +64,7 @@
 .drusjs-calendar .calendar-main-inner {
     box-sizing: border-box;
     background-color: transparent;
-    padding: 0px 0px 0px 23px;
+    padding: 0px 0px 2px 23px;
     width: 100%;
     height: 41px;
     display: flex;
@@ -80,6 +80,7 @@
     white-space: nowrap;
     color: #434C4E;
     margin-right: 4px;
+    margin-top: 2px;
 }
 .drusjs-calendar .input {
     box-sizing: border-box;
