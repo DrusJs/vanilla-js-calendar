@@ -14,7 +14,7 @@
     justify-content: center;
     max-width: 722px;
     gap: 5px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .drusjs-calendar .disabled {
