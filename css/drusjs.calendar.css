@@ -24,14 +24,6 @@
     /* opacity: .5; */
 }
 
-/*Удалить*/
-.drusjs-calendar {
-    margin: 20px auto 0;
-    /* padding: 50px;
-    max-width: 822px; */
-}
-/*Удалить*/
-
 .drusjs-calendar .calendar {
     box-sizing: border-box;
     width: var(--primary-width);
