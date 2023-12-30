@@ -37,9 +37,9 @@ if (calendarSelectValueElements.length) {
                 cont.classList.add('active')
             }
             if (event.currentTarget.closest('.month-select')) {
-                document.querySelector('.calendar-top-text').innerHTML = 'Выберите месяц'
+                // document.querySelector('.calendar-top-text').innerHTML = 'Выберите месяц'
             } else {
-                document.querySelector('.calendar-top-text').innerHTML = 'Выберите год'
+                // document.querySelector('.calendar-top-text').innerHTML = 'Выберите год'
             }
         })
     }
@@ -330,7 +330,7 @@ if (calendarSelectDropdownElements.length) {
     for (let dropdown of calendarSelectDropdownElements) {
         dropdown.querySelectorAll('.calendar-select-dropdown__item').forEach(el => {
             el.addEventListener('click', (event) => {
-                document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
+                // document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
                 dropdown.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML
                 dropdown.parentElement.firstElementChild.classList.remove('none-select')             
                 event.currentTarget.closest('.calendar-select').classList.remove('active')
@@ -531,7 +531,7 @@ document.querySelectorAll('.input-search').forEach(element=>{
         }
         filter.querySelectorAll('.calendar-select-dropdown__item').forEach(el => {
             el.addEventListener('click', (event) => {
-                document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
+                // document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
                 filter.parentElement.querySelector('.calendar-select-value').innerHTML = event.currentTarget.innerHTML
                 filter.parentElement.firstElementChild.classList.remove('none-select')             
                 event.currentTarget.closest('.calendar-select').classList.remove('active')
@@ -578,9 +578,9 @@ document.querySelector('.reset-changes').addEventListener('click', function () {
 
 document.querySelectorAll('.button-close, .button-back').forEach(el=>{
     el.addEventListener('click', ()=>{
-        document.querySelector('.calendar-select.active').classList.remove('search')
-        document.querySelector('.calendar-select.active').classList.remove('active')
-        document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
+        // document.querySelector('.calendar-select.active').classList.remove('search')
+        // document.querySelector('.calendar-select.active').classList.remove('active')
+        // document.querySelector('.calendar-top-text').innerHTML = 'Выберите период'
     })
 })
 

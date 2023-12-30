@@ -260,6 +260,7 @@
     align-items: center;
     gap: 5px;
     cursor: pointer;
+    position: relative;
 }
 .drusjs-calendar .calendar-select-value::after {
     box-sizing: border-box;
@@ -272,6 +273,8 @@
     background-position: center center;
     background-size: contain;
     transform: rotate(180deg);
+    position: absolute;
+    right: -30px;
 }
 .drusjs-calendar .calendar-select.year-select .calendar-select-value::after {
     display: none;
@@ -364,16 +367,7 @@
     border: 0.5px solid #969FA8;
     border-top: none;
 }
-.drusjs-calendar .calendar-table-overflow {
-    max-height: calc(100vh - 230px);
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
 
-.drusjs-calendar .calendar-table-overflow::-webkit-scrollbar {
-    display: none;
-}
 .drusjs-calendar .calendar-table-cell {
     box-sizing: border-box;
     min-width: var(--primary-height);
@@ -694,11 +688,20 @@
         margin-top: 0;
     }
     .drusjs-calendar .calendar-table-overflow {
+        overflow-y: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    
+    .drusjs-calendar .calendar-table-overflow::-webkit-scrollbar {
+        display: none;
+    }
+    .drusjs-calendar .calendar-table-overflow {
         max-height: calc(100vh - 370px);
     }
-    .drusjs-calendar .calendar-table-overflow:has(.active) {        
+    /* .drusjs-calendar .calendar-table-overflow:has(.active) {        
         min-height: calc(100vh - 370px);
-    }
+    } */
     .drusjs-calendar .calendar-select-dropdown {
         max-height: calc(100vh - 270px);
         min-height: calc(100vh - 270px);
@@ -804,11 +807,12 @@
         max-width: 288px;
     }
     .drusjs-calendar .calendar-table-overflow {
-        max-height: calc(100vh - 276px);
+        max-height: calc(100vh - 240px);
     }
     .drusjs-calendar .calendar-select-dropdown {
-        max-height: calc(100vh - 276px);
-        min-height: calc(100vh - 276px);
+        max-height: none;
+        min-height: auto;
+        height: calc(100vh - 210px);
     }
     .drusjs-calendar .calendar-action-bar .reset-changes, .drusjs-calendar .calendar-action-bar .accept-changes {
         height: 41px;
