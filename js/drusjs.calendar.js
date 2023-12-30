@@ -564,6 +564,10 @@ document.querySelector('.accept-changes').addEventListener('click', function () 
 })
 
 document.querySelector('.reset-changes').addEventListener('click', function () {
+    if (document.querySelector('.month-select.active')) {
+        document.querySelector('.month-select.active').classList.remove('active')
+        return
+    }
     if (document.querySelector('.year-select.active')) {
         document.querySelector('.year-select.active').classList.remove('active')
     } else {
