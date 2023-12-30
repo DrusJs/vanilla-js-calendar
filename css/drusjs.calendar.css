@@ -21,7 +21,6 @@
 }
 .drusjs-calendar .disabled-hide {
     pointer-events: none;
-    /* opacity: .5; */
 }
 
 .drusjs-calendar .calendar {
