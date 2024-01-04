@@ -319,7 +319,7 @@
     top: var(--primary-height);
     display: none;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(10, min-content);
+    grid-template-rows: repeat(8, min-content);
     padding: 10px;
     gap: 15px;
 }
