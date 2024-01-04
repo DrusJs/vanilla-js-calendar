@@ -6,7 +6,6 @@
 .drusjs-calendar {
     box-sizing: border-box;
     font-family: 'Roboto', sans-serif;
-    /* background-color: #F1F1F1; */
     font-weight: 400;
     display: flex;
     flex-wrap: wrap;
@@ -14,7 +13,6 @@
     justify-content: center;
     max-width: 722px;
     gap: 5px;
-    /* overflow: hidden; */
 }
 
 .drusjs-calendar .disabled {
@@ -27,6 +25,7 @@
 .drusjs-calendar .calendar {
     box-sizing: border-box;
     width: var(--primary-width);
+    max-width: var(--primary-width);
     display: flex;
     flex-direction: column;
     font-size: 19px;
@@ -692,9 +691,6 @@
     .drusjs-calendar .calendar-table-overflow {
         max-height: calc(100vh - 270px);
     }
-    /* .drusjs-calendar .calendar-table-overflow:has(.active) {        
-        min-height: calc(100vh - 370px);
-    } */
     .drusjs-calendar .calendar-select-dropdown {
         max-height: calc(100vh - 170px);
         min-height: calc(100vh - 170px);
