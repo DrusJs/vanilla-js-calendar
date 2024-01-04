@@ -319,7 +319,7 @@
     top: var(--primary-height);
     display: none;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(20, min-content);
+    /* grid-template-rows: repeat(20, min-content); */
     padding: 10px;
     gap: 15px;
 }
@@ -422,6 +422,7 @@
 }
 .drusjs-calendar .calendar.complete .complete-date {
     display: block;
+    margin-top: 2px;
 }
 
 .drusjs-calendar .calendar.complete .clear-button,
@@ -660,7 +661,7 @@
         top: var(--primary-height);
         display: none;
         grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(20, min-content);
+        /* grid-template-rows: repeat(20, min-content); */
         padding: 10px;
         gap: 5px;
     }
