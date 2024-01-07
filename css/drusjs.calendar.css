@@ -536,6 +536,7 @@
         max-width: calc(8.9vh * 15);
         padding: calc(4.4vh);
         background-color: #EFF0F0;
+        min-width: 800px;
     }
     .drusjs-calendar .calendar-main {
         align-items: center;
@@ -564,7 +565,9 @@
     .drusjs-calendar .calendar-action-bar .reset-changes:hover {
         text-decoration-color: #2879FF;
     }
-
+    .drusjs-calendar .calendar {
+        min-width: 358px;
+    }
     .year-select .calendar-select-dropdown {
         min-height: 51px;
         min-width: 358px;
