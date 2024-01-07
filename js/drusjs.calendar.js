@@ -70,6 +70,9 @@ function clearDateField(element, isDateFrom) {
         container.querySelectorAll('.calendar-select-head').forEach(el=>{
             el.classList.add('none-select')
         })
+        if (document.querySelector('.calendar.active')) {
+            document.querySelector('.calendar-action-bar').classList.add('active')
+        }
 }
 
 function clearInputs(element) {
@@ -570,6 +573,7 @@ document.querySelector('.accept-changes').addEventListener('click', function () 
         document.querySelector('.year-select.active').querySelector('.calendar-select-value').innerHTML = val
         document.querySelector('.year-select.active').classList.remove('active')
     } else {
+        if (document.querySelector('.calendar-select.active')) {document.querySelector('.calendar-select.active').classList.remove('active')}
         errorElement.classList.remove('active')
         document.querySelectorAll('.calendar').forEach(calendar => {
             calendar.classList.remove('active')
@@ -587,6 +591,7 @@ document.querySelector('.reset-changes').addEventListener('click', function () {
     if (document.querySelector('.year-select.active')) {
         document.querySelector('.year-select.active').classList.remove('active')
     } else {
+        if (document.querySelector('.calendar-select.active')) {document.querySelector('.calendar-select.active').classList.remove('active')}
         errorElement.classList.remove('active')
         document.querySelectorAll('.calendar').forEach(calendar => {
             calendar.classList.remove('active')
