@@ -533,7 +533,9 @@
         --primary-cell-height: 48px;
     }
     .drusjs-calendar {
-        max-width: calc(8.8vh * 15);
+        max-width: calc(8.9vh * 15);
+        padding: calc(4.4vh);
+        background-color: #EFF0F0;
     }
     .drusjs-calendar .calendar-main {
         align-items: center;
