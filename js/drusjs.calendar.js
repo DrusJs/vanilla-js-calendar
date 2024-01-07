@@ -75,6 +75,7 @@ function clearInputs(element) {
     element.querySelector('.complete-date').innerHTML = ""
 }
 
+
 function checkToSetDate(calendar) {
     let d = calendar.querySelector('.input.day').value
     let m = calendar.querySelector('.input.month').value
@@ -105,6 +106,17 @@ function checkToSetDate(calendar) {
         clearInputs(calendar)
         isTO(calendar)?dateTo=['','','']:dateFrom=['','','']
     }    
+}
+
+
+
+
+function checkEqualDate() {
+    let monthFrom = calendarFrom.querySelector('.input.month').value
+    let yearFrom = calendarFrom.querySelector('.input.year').value
+    let monthTo = calendarTo.querySelector('.input.month').value
+    let yearTo = calendarTo.querySelector('.input.year').value
+    return (monthFrom == monthTo) && (yearFrom == yearTo)
 }
 
 function setDate(element, date) {
