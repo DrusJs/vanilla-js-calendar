@@ -542,7 +542,7 @@
         align-items: center;
     }
     .year-select .calendar-select-dropdown, .month-select .calendar-select-dropdown {
-        max-height: var(--primary-width);
+        max-height: calc(8.8vh * 5);
     }
     .drusjs-calendar .calendar-main-inner, .drusjs-calendar .clear-button {
         height: 100%;
@@ -582,7 +582,10 @@
     
     .drusjs-calendar .year-select .calendar-select-dropdown__item {
         height: var(--primary-height);
-        max-height: 51px;
+        max-height: var(--primary-height);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .drusjs-calendar .calendar-table {
