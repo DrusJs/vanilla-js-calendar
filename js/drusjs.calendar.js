@@ -93,7 +93,6 @@ function checkToSetDate(calendar) {
         setDate(calendar, date)
         if (document.querySelectorAll('.calendar.complete').length == 2) {
             if (dateFrom.getTime()>dateTo.getTime()) {
-                console.log(dateFrom, dateTo, dateFrom.getTime()> dateTo.getTime());
                 errorElement.classList.add('active')
                 errorElement.lastElementChild.innerHTML = ERROR_MESSAGES[0]
                 return
@@ -114,9 +113,6 @@ function checkToSetDate(calendar) {
         isTO(calendar)?dateTo=['','','']:dateFrom=['','','']
     }    
 }
-
-
-
 
 function checkEqualDate() {
     let monthFrom = calendarFrom.querySelector('.input.month').value
@@ -161,30 +157,56 @@ function clearCalendar(table) {
     })
 }
 
-function setPath(isFirst) {
+function setPath(isFirst, isEqualDate=false) {
+    if (isEqualDate) {
+        if (isFirst) {
+            let table = calendarFrom.querySelector('.calendar-table')
+            let day = table.querySelector('.active')
+            let counter = +day.dataset.day + 1
+            let temp = table.querySelector(`[data-day="${counter}"]`)
+            while (!temp.classList.contains('active')) {
+                temp.classList.add('path')
+                counter++
+                temp = table.querySelector(`[data-day="${counter}"]`)
+            }
+        } else {
+            let table = calendarTo.querySelector('.calendar-table')
+            let day = table.querySelector('.active')
+            let counter = +day.dataset.day + 1
+            let temp = table.querySelector(`[data-day="${counter}"]`)
+            while (!temp.classList.contains('active')) {
+                temp.classList.add('path')
+                counter++
+                temp = table.querySelector(`[data-day="${counter}"]`)
+            }
+        }
+        return
+    }
     if (isFirst) {
         let table = calendarFrom.querySelector('.calendar-table')
-        let day = table.querySelector('.active')
-        let counter = +day.dataset.day + 1
+        let day = +calendarFrom.querySelector('input.day').value
+        let counter = day + 1
         let temp = table.querySelector(`[data-day="${counter}"]`)
         table.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
             el.classList.remove('path')
         })
         while (temp) {
             temp.classList.add('path')
+            temp.classList.remove('active')
             counter++
             temp = table.querySelector(`[data-day="${counter}"]`)
         }
     } else {
         let table = calendarTo.querySelector('.calendar-table')
-        let day = table.querySelector('.active')
+        let day = +calendarTo.querySelector('input.day').value
         let counter = 1
         let temp = table.querySelector(`[data-day="${counter}"]`)
         table.querySelectorAll('.calendar-table-cell.path').forEach(el=>{
             el.classList.remove('path')
         })
-        while (temp!=day) {
+        while (temp.innerHTML!=day) {
             temp.classList.add('path')
+            temp.classList.remove('active')
             counter++
             temp = table.querySelector(`[data-day="${counter}"]`)
         }
@@ -194,21 +216,45 @@ function setPath(isFirst) {
 function calendarTableCellAction(element) {
     if (element.classList.contains('active')) { return }
     let table = element.closest('table.calendar-table')   
-    let activeCell = table.querySelector('.calendar-table-cell.active')
-    if (activeCell) {
-        activeCell.classList.remove('active')
-    }
-    if (document.querySelector('.calendar-table-cell.active')) {
-        element.classList.add('active')
-        element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
-        setPath(true)
-        setPath(false)
+    if (checkEqualDate()) {
+        let calendar = element.closest('.calendar')
+        calendar.querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
+        let days = document.querySelectorAll('input.day')
+        clearCalendar(calendarFrom.querySelector('table.calendar-table'))
+        clearCalendar(calendarTo.querySelector('table.calendar-table'))
+        document.querySelectorAll(`[data-day="${+days[0].value}"]`).forEach(el=>{
+            el.classList.add('active')
+        })
+        document.querySelectorAll(`[data-day="${+days[1].value}"]`).forEach(el=>{
+            el.classList.add('active')
+        })
+        setPath(true, true)
+        setPath(false, true)
     } else {
-        element.classList.add('active')
-        element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
-    } 
-    eventSetActiveBar(element.closest('.calendar'))
-
+        let activeCell = table.querySelector('.calendar-table-cell.active')
+        if (activeCell) {
+            activeCell.classList.remove('active')
+        }
+        if (document.querySelector('.calendar-table-cell.active')) {
+            element.classList.add('active')
+            element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
+            setPath(true)
+            setPath(false)
+            if (document.querySelectorAll('.calendar-table-cell.active').length>2) {
+                let date1 = calendarFrom.querySelector('input.day').value
+                let date2 = calendarTo.querySelector('input.day').value
+                if (+date1 > +date2) {
+                    document.querySelectorAll('.calendar-table-cell.active')[0].classList.remove('active')
+                } else {
+                    document.querySelectorAll('.calendar-table-cell.active')[2].classList.remove('active')
+                }
+            }
+        } else {
+            element.classList.add('active')
+            element.closest('.calendar').querySelector('input.day').value = setTwoDigitsValue(element.innerHTML)
+        } 
+        eventSetActiveBar(element.closest('.calendar'))
+    }
 }
 
 function eventCalendarChangeTable(calendar) {
@@ -232,7 +278,6 @@ function eventSetActiveBar(calendar) {
     if (isTO(calendar)) {
         let temp = Array.isArray(dateTo)?dateTo:[dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate()]
         let checkDate = [y, m-1, d]
-        console.log(temp[2], checkDate[2]);
         for (let i=0; i<3; i++) {
             if (temp[i] != checkDate[i]) {
                 document.querySelector('.calendar-action-bar').classList.add('active')
