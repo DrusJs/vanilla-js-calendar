@@ -2,15 +2,19 @@ const MONTH = ['Январь', 'Февраль', 'Март', 'Апрель', 'М
 const MONTH_ENDING = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
 const WEEK = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'] 
 const NOW_DATE = new Date()
+
+//значение текущего года
 const NOW_YEAR = NOW_DATE.getFullYear()
+//значение последнего года в списке подказок
 const LATE_YEAR = 1996
+
+
 const ERROR_MESSAGES = ['Дата начала периода превышает дату окончания', 'Выберите дату не позднее сегодняшнего дня']
 
 const calendarElement = document.querySelector('.drusjs-calendar')
 const calendarFrom = document.querySelector('.js-from')
 const calendarTo = document.querySelector('.js-to')
 const errorElement = document.querySelector('.calendar-error-field')
-
 
 let tempCheck = false
 let dateFrom = ['','','']

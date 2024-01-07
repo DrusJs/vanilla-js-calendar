@@ -633,8 +633,11 @@
     .drusjs-calendar .calendar-action-mobile {
         max-width: 428px;
     }
-    .drusjs-calendar:has(.calendar.active) .calendar:not(.active) {
+    .drusjs-calendar:has(.calendar.from.active) .calendar.to {
         display: none;
+    }
+    .drusjs-calendar:has(.calendar.to.active .calendar-select.active) .calendar.from {
+        display: none;        
     }
     .drusjs-calendar .calendar-action-bar .reset-changes {
         border: 1px solid #2961FE;
