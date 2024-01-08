@@ -898,12 +898,12 @@
         max-width: 458px
     }
     .drusjs-calendar .calendar-table-overflow {
-        max-height: calc(100vh - 200px);
+        max-height: calc(100vh - (100vw/7*6));
     }
     .drusjs-calendar .calendar-select-dropdown {
         max-height: none;
         min-height: auto;
-        height: calc(100vh - 120px);
+        height: calc(100vh - (100vw/7*3));
     }
     .drusjs-calendar .calendar-action-bar .reset-changes, .drusjs-calendar .calendar-action-bar .accept-changes {
         height: var(--primary-height);
