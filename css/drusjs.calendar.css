@@ -671,7 +671,8 @@
 @media (max-width: 639px) {
     :root {
         --primary-height: 61px;
-        --primary-width: 428px;
+        --primary-width: 428px;        
+        --primary-cell-height: 38px;
     }
     .drusjs-calendar {
         justify-content: center;
@@ -853,12 +854,15 @@
 
 @media (max-width: 479px) {
     :root {
-        --primary-height: 41px;
-        --primary-width: 288px;
-        --primary-cell-height: 38px;
+        --primary-height: calc((100vw - 21px) / 7);
+        --primary-width: calc(100vw - 20px);
+        --primary-cell-height: calc((100vw - 21px) / 7);
+    }
+    .drusjs-calendar .calendar-main {
+        align-items: center;
     }
     .drusjs-calendar .calendar-main-inner, .drusjs-calendar .clear-button {
-        height: 31px;
+        height: 100%;
     }
     .drusjs-calendar .clear-button {
         width: 31px;
@@ -870,7 +874,7 @@
         background-image: none;
     }
     .drusjs-calendar .calendar .calendar-main-inner {
-        background-position: right 28px top 3px;
+        background-position: right 28px center;
     }
     .drusjs-calendar .calendar.complete .complete-date {
         white-space: nowrap;
@@ -890,10 +894,8 @@
         padding-bottom: 10px;
     }
     .drusjs-calendar .calendar-action-bar {        
-        max-width: 288px;
-    }
-    .drusjs-calendar .calendar-action-mobile {
-        max-width: 288px;
+        width: 100%;
+        max-width: 458px
     }
     .drusjs-calendar .calendar-table-overflow {
         max-height: calc(100vh - 200px);
@@ -904,11 +906,13 @@
         height: calc(100vh - 120px);
     }
     .drusjs-calendar .calendar-action-bar .reset-changes, .drusjs-calendar .calendar-action-bar .accept-changes {
-        height: 41px;
+        height: var(--primary-height);
     }
     .drusjs-calendar .month-select .calendar-select-dropdown__item,
     .drusjs-calendar .year-select .calendar-select-dropdown__item {
-        line-height: 19px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .month-select .calendar-select-dropdown {
         grid-template-columns: repeat(2, 1fr);        
