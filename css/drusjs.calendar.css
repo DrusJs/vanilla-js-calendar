@@ -569,7 +569,7 @@
         min-width: 358px;
     }
     .year-select .calendar-select-dropdown {
-        min-height: 51px;
+        min-height: 41px;
         min-width: 358px;
         max-width: var(--primary-width);
         top: var(--primary-height);
@@ -596,30 +596,30 @@
         min-width: var(--primary-height);
         height: var(--primary-height);
         line-height: var(--primary-cell-height);
-        min-height: 51px;
-        min-width: 51px;
+        min-height: 41px;
+        min-width: 41px;
     }
     .drusjs-calendar .calendar-select-head {
         max-width: var(--primary-width);
         height: var(--primary-height);
-        min-height: 51px;
+        min-height: 41px;
         min-width: 358px;
     }
     .calendar-search-select {
         width: var(--primary-width);
         height: var(--primary-height);
-        min-height: 51px;
+        min-height: 41px;
         min-width: 358px;
     }
     .calendar-search-select .input-search {
         width: var(--primary-width);
-        min-height: 51px;
+        min-height: 41px;
         min-width: 358px;
     }
     .drusjs-calendar .calendar-main {
         max-width: var(--primary-width);   
         height: var(--primary-height);
-        min-height: 51px;
+        min-height: 41px;
         min-width: 358px;
     }
     .drusjs-calendar .calendar-action-bar .accept-changes,
