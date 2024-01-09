@@ -661,3 +661,24 @@ window.addEventListener('click', (event)=> {
         }
     }
 })
+
+window.addEventListener("resize", (event) => {
+    if (window.matchMedia("(min-width: 740px)").matches) {
+        if (document.querySelector('.calendar').offsetWidth < 340) {
+            calendarFrom.classList.add('resize')
+            calendarTo.classList.add('resize')
+        } else {
+            calendarFrom.classList.remove('resize')
+            calendarTo.classList.remove('resize')
+        }
+    }      
+});
+if (window.matchMedia("(min-width: 740px)").matches) {
+    if (document.querySelector('.calendar').offsetWidth < 340) {
+        calendarFrom.classList.add('resize')
+        calendarTo.classList.add('resize')
+    } else {
+        calendarFrom.classList.remove('resize')
+        calendarTo.classList.remove('resize')
+    }
+}  
